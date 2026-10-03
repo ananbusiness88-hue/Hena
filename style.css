@@ -5,7 +5,7 @@
 }
 
 :root {
-    --color-bg: #F7F9F7;
+    --color-bg: #FBFAF6;
     --color-primary: #4F8F72;
     --color-dark-green: #245443;
     --color-blue: #8EB7D3;
@@ -21,9 +21,9 @@
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
     --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    --spacing-2xl: 4rem;
-    --spacing-3xl: 6rem;
+    --spacing-xl: 2.25rem;
+    --spacing-2xl: 3rem;
+    --spacing-3xl: 4rem;
 }
 
 html {
@@ -35,6 +35,20 @@ body {
     color: var(--color-text-dark);
     background-color: var(--color-bg);
     line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Pearl background + soft random leaf pattern */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.22;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%234f8f72' stroke-width='2'%3E%3Cpath d='M42 48c18-22 38-18 48-2-19 2-34 10-48 2Z'/%3E%3Cpath d='M90 46c-8 12-18 24-30 36'/%3E%3Cpath d='M202 118c16-18 31-12 37 1-14 1-26 7-37-1Z'/%3E%3Cpath d='M220 118c-10 10-18 19-27 29'/%3E%3Cpath d='M78 204c13-17 28-14 35-2-13 2-24 7-35 2Z'/%3E%3Cpath d='M96 203c-7 9-14 17-22 25'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 260px 260px;
 }
 
 /* Container */
@@ -302,7 +316,7 @@ p {
 /* Why Section */
 .why-section {
     padding: var(--spacing-3xl) 0;
-    background-color: var(--color-white);
+    background-color: rgba(255, 255, 255, 0.72);
 }
 
 .section-header {
@@ -432,7 +446,7 @@ p {
 /* How It Works */
 .how-section {
     padding: var(--spacing-3xl) 0;
-    background-color: var(--color-bg);
+    background-color: rgba(251, 250, 246, 0.72);
 }
 
 .steps-grid {
