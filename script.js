@@ -1,122 +1,131 @@
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    initializeNavbar();
-    initializeDownloadButtons();
-    initializeScrollAnimations();
-    initializeDownloadCounter();
-    initializeMobileMenu();
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    initNavbar();
+    initDownloadCounters();
+    initImageLoading();
+    initScrollAnimations();
+    initMobileMenu();
 });
 
-// Navbar Sticky Behavior
-function initializeNavbar() {
+// Navbar functionality
+function initNavbar() {
     const navbar = document.querySelector('.navbar');
-    let lastScrollPosition = 0;
+    const window_height = window.innerHeight;
 
-    window.addEventListener('scroll', function() {
-        const currentScroll = window.pageYOffset;
-
-        if (currentScroll > 100) {
-            navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.08)';
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > window_height * 0.3) {
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.boxShadow = 'none';
+            navbar.classList.remove('scrolled');
         }
-
-        lastScrollPosition = currentScroll;
     });
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href !== '#' && document.querySelector(href)) {
-                e.preventDefault();
-                const element = document.querySelector(href);
-                const offsetTop = element.offsetTop - 70;
-                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-            }
+    // Download button click handlers
+    const downloadButtons = document.querySelectorAll('.btn-download');
+    downloadButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = btn.getAttribute('data-url');
+            window.location.href = url;
         });
     });
 }
 
-// Mobile Menu
-function initializeMobileMenu() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    let menuOpen = false;
+// Mobile menu toggle
+function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navbarMenu = document.getElementById('navbarMenu');
 
     if (hamburger) {
-        hamburger.addEventListener('click', function() {
-            menuOpen = !menuOpen;
-            if (menuOpen) {
-                navMenu.style.display = 'flex';
-                hamburger.style.gap = '8px';
-                hamburger.querySelectorAll('span').forEach((span, index) => {
-                    if (index === 0) span.style.transform = 'rotate(45deg) translateY(10px)';
-                    else if (index === 1) span.style.opacity = '0';
-                    else span.style.transform = 'rotate(-45deg) translateY(-10px)';
-                });
-            } else {
-                navMenu.style.display = 'none';
-                hamburger.querySelectorAll('span').forEach(span => {
-                    span.style.transform = 'none';
-                    span.style.opacity = '1';
-                });
-            }
+        hamburger.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');
+        });
+
+        // Close menu when link is clicked
+        navbarMenu.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navbarMenu.classList.remove('active');
+            });
         });
     }
 }
 
-// Download Button Handler
-function initializeDownloadButtons() {
-    const downloadButtons = document.querySelectorAll('[data-action="download"]');
-    const apkUrl = 'https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk';
-    downloadButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            window.location.href = apkUrl;
+// Download counter initialization
+function initDownloadCounters() {
+    const counterElement = document.getElementById('download-count');
+    if (counterElement) {
+        const initialCount = 669;
+        counterElement.textContent = initialCount.toLocaleString('ar-EG');
+    }
+}
+
+// Image loading with error handling
+function initImageLoading() {
+    const images = document.querySelectorAll('img');
+    
+    images.forEach(img => {
+        img.addEventListener('load', () => {
+            img.classList.add('loaded');
+        });
+
+        // Fallback if image is already cached
+        if (img.complete) {
+            img.classList.add('loaded');
+        }
+
+        // Error handling
+        img.addEventListener('error', () => {
+            // Gracefully handle missing images
+            img.style.opacity = '0.3';
         });
     });
 }
 
-// Scroll Animations
-function initializeScrollAnimations() {
-    const cards = document.querySelectorAll('.fade-in-on-scroll');
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        cards.forEach(card => {
-            card.style.animationPlayState = 'paused';
-            observer.observe(card);
+// Scroll-triggered animations
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
         });
-    } else {
-        cards.forEach(card => {
-            card.style.animation = 'fadeInUp 0.6s ease forwards';
-        });
-    }
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-scroll').forEach(el => {
+        observer.observe(el);
+    });
 }
 
-// Download Counter
-function initializeDownloadCounter() {
-    const counterNumber = document.querySelector('.counter-number');
-    if (counterNumber) counterNumber.textContent = '669';
-}
-
-window.addEventListener('load', function() {
-    observeElements();
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const offset = 100;
+                const targetPosition = target.offsetTop - offset;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
 });
 
-function observeElements() {
-    const elements = document.querySelectorAll('[class*="fade"]');
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.style.opacity = '1';
-            });
-        }, { threshold: 0.1 });
-        elements.forEach(el => observer.observe(el));
+// Keyboard navigation support
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const navbarMenu = document.getElementById('navbarMenu');
+        if (navbarMenu) {
+            navbarMenu.classList.remove('active');
+        }
     }
-}
+});
