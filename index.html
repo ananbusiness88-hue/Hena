@@ -11,148 +11,272 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="navbar-container">
-            <div class="navbar-logo"><span class="logo-text">هِنا</span></div>
+            <div class="navbar-logo">
+                <span class="logo-text">هِنا</span>
+            </div>
             <ul class="nav-menu">
                 <li><a href="#why" class="nav-link">ليه هِنا؟</a></li>
                 <li><a href="#services" class="nav-link">الخدمات</a></li>
                 <li><a href="#how" class="nav-link">إزاي بتشتغل؟</a></li>
                 <li><a href="#merchants" class="nav-link">لأصحاب المحلات</a></li>
             </ul>
-            <button class="nav-download-btn" data-action="download">حَمِّل التطبيق</button>
-            <div class="hamburger" aria-label="فتح القائمة" role="button" tabindex="0">
-                <span></span><span></span><span></span>
+            <button class="nav-download-btn">حَمِّل التطبيق</button>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-brand">هِنا</h1>
-                    <h2 class="hero-headline">كل احتياجات بيتك<br>في مكان واحد.</h2>
-                    <p class="hero-subheadline">تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</p>
-                    <div class="hero-cta-group">
-                        <button class="primary-btn cta-btn" data-action="download">حَمِّل هِنا من هنا</button>
-                        <div class="qr-container">
-                            <img src="assets/hena-download-qr.png" alt="QR code لتحميل التطبيق" class="qr-code">
-                        </div>
-                    </div>
-                    <div class="download-counter">
-                        <span class="counter-number">669</span>
-                        <span class="counter-text">+ تحميل</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-brand">هِنا</h1>
+                <h2 class="hero-headline">كل احتياجات بيتك<br>في مكان واحد.</h2>
+                <p class="hero-subheadline">تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</p>
+                
+                <div class="hero-cta-group">
+                    <button class="primary-btn cta-btn" data-action="download">حَمِّل هِنا من هنا</button>
+                    <div class="qr-container">
+                        <img src="assets/hena-download-qr.png" alt="QR code لتحميل التطبيق" class="qr-code">
                     </div>
                 </div>
-                <div class="hero-visual">
-                    <div class="device-frame">
-                        <div class="device-screen">
-                            <img src="assets/app-home.png" alt="شاشة التطبيق الرئيسية" class="app-screenshot">
-                        </div>
+
+                <div class="download-counter">
+                    <span class="counter-number">669</span>
+                    <span class="counter-text">+ تحميل</span>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <img src="assets/app-home.png" alt="شاشة التطبيق الرئيسية" class="app-screenshot">
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="why" class="why-section">
-            <div class="container">
-                <h2 class="section-title">ليه هِنا؟</h2>
-                <h3 class="section-headline">وقت أقل.<br>مجهود أقل.<br>توفير أكثر.</h3>
-                <div class="benefits-grid">
-                    <div class="benefit-card"><div class="benefit-number">01</div><h4 class="benefit-title">وفّر وقتك</h4><p class="benefit-text">تسوق كل احتياجاتك من مكان واحد وليس محلات متعددة.</p></div>
-                    <div class="benefit-card"><div class="benefit-number">02</div><h4 class="benefit-title">وفّر مجهودك</h4><p class="benefit-text">توصيل سريع مباشر لحد باب بيتك بدون متاعب.</p></div>
-                    <div class="benefit-card"><div class="benefit-number">03</div><h4 class="benefit-title">وفّر في مشترياتك</h4><p class="benefit-text">أسعار تنافسية وعروض خاصة في تطبيق هِنا.</p></div>
+    <!-- Why Hena Section -->
+    <section id="why" class="why-section">
+        <div class="container">
+            <h2 class="section-title">ليه هِنا؟</h2>
+            <h3 class="section-headline">وقت أقل.<br>مجهود أقل.<br>توفير أكثر.</h3>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-number">01</div>
+                    <h4 class="benefit-title">وفّر وقتك</h4>
+                    <p class="benefit-text">تسوق كل احتياجاتك من مكان واحد وليس محلات متعددة.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-number">02</div>
+                    <h4 class="benefit-title">وفّر مجهودك</h4>
+                    <p class="benefit-text">توصيل سريع مباشر لحد باب بيتك بدون متاعب.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-number">03</div>
+                    <h4 class="benefit-title">وفّر في مشترياتك</h4>
+                    <p class="benefit-text">أسعار تنافسية وعروض خاصة في تطبيق هِنا.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="brand-statement-section">
-            <div class="container">
-                <h2 class="brand-statement-title">مصمم للمنطقة<br>اللي إنت عايش فيها.</h2>
-                <p class="brand-statement-text">هِنا معمول علشان يفهم احتياجات المجتمعات الجديدة وطريقة التسوق فيها، ويجمع الخدمات اللي بتحتاجها في حياتك اليومية.</p>
-            </div>
-        </section>
+    <!-- Brand Statement Section -->
+    <section class="brand-statement-section">
+        <div class="container">
+            <h2 class="brand-statement-title">مصمم للمنطقة<br>اللي إنت عايش فيها.</h2>
+            <p class="brand-statement-text">
+                هِنا معمول علشان يفهم احتياجات المجتمعات الجديدة وطريقة التسوق فيها، ويجمع الخدمات اللي بتحتاجها في حياتك اليومية.
+            </p>
+        </div>
+    </section>
 
-        <section id="services" class="services-section">
-            <div class="container">
-                <h2 class="section-title">كل احتياجات البيت</h2>
-                <p class="section-subtitle">اختار اللي محتاجه وكمّل يومك.</p>
-                <div class="services-grid">
-                    <div class="service-card"><div class="service-icon">🛒</div><h4>سوبر ماركت</h4></div>
-                    <div class="service-card"><div class="service-icon">🥬</div><h4>خضار وفاكهة</h4></div>
-                    <div class="service-card"><div class="service-icon">🍞</div><h4>مخبوزات</h4></div>
-                    <div class="service-card"><div class="service-icon">🍗</div><h4>فراخ ومجمدات</h4></div>
-                    <div class="service-card"><div class="service-icon">🥛</div><h4>ألبان</h4></div>
-                    <div class="service-card"><div class="service-icon">+</div><h4>وأكثر</h4></div>
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2 class="section-title">كل احتياجات البيت</h2>
+            <p class="section-subtitle">اختار اللي محتاجه وكمّل يومك.</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🛒</div>
+                    <h4>سوبر ماركت</h4>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🥬</div>
+                    <h4>خضار وفاكهة</h4>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🍞</div>
+                    <h4>مخبوزات</h4>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🍗</div>
+                    <h4>فراخ ومجمدات</h4>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🥛</div>
+                    <h4>ألبان</h4>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">+</div>
+                    <h4>وأكثر</h4>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="how" class="how-section">
-            <div class="container">
-                <h2 class="section-title">من أول اختيارك<br>لحد باب بيتك.</h2>
-                <div class="steps-container">
-                    <div class="step-item"><div class="step-number">01</div><h4 class="step-title">اختار</h4><p class="step-description">تصفح المنتجات والخدمات اللي محتاجها.</p></div>
-                    <div class="step-connector"></div>
-                    <div class="step-item"><div class="step-number">02</div><h4 class="step-title">اطلب</h4><p class="step-description">أضف احتياجاتك وأكمل طلبك بسهولة.</p></div>
-                    <div class="step-connector"></div>
-                    <div class="step-item"><div class="step-number">03</div><h4 class="step-title">استلم</h4><p class="step-description">طلبك يتجهز ويتوصّل ليك بسرعة.</p></div>
+    <!-- How It Works Section -->
+    <section id="how" class="how-section">
+        <div class="container">
+            <h2 class="section-title">من أول اختيارك<br>لحد باب بيتك.</h2>
+            
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h4 class="step-title">اختار</h4>
+                    <p class="step-description">تصفح المنتجات والخدمات اللي محتاجها.</p>
+                </div>
+                
+                <div class="step-connector"></div>
+                
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h4 class="step-title">اطلب</h4>
+                    <p class="step-description">أضف احتياجاتك وأكمل طلبك بسهولة.</p>
+                </div>
+                
+                <div class="step-connector"></div>
+                
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h4 class="step-title">استلم</h4>
+                    <p class="step-description">طلبك يتجهز ويتوصّل ليك بسرعة.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="showcase-section">
-            <div class="container">
-                <h2 class="section-title">التطبيق بسيط وسهل</h2>
-                <p class="section-subtitle">واجهة مصممة بدقة للتجربة الأفضل.</p>
-                <div class="showcase-grid">
-                    <div class="showcase-card fade-in-on-scroll"><div class="showcase-image-container"><img src="assets/app-home.png" alt="الشاشة الرئيسية" loading="lazy"></div><p class="showcase-label">الصفحة الرئيسية</p></div>
-                    <div class="showcase-card fade-in-on-scroll"><div class="showcase-image-container"><img src="assets/app-products.png" alt="قائمة المنتجات" loading="lazy"></div><p class="showcase-label">تصفح المنتجات</p></div>
-                    <div class="showcase-card fade-in-on-scroll"><div class="showcase-image-container"><img src="assets/app-orders.png" alt="الطلبات" loading="lazy"></div><p class="showcase-label">متابعة الطلبات</p></div>
+    <!-- App Showcase Section -->
+    <section class="showcase-section">
+        <div class="container">
+            <h2 class="section-title">التطبيق بسيط وسهل</h2>
+            <p class="section-subtitle">واجهة مصممة بدقة للتجربة الأفضل.</p>
+            
+            <div class="showcase-grid">
+                <div class="showcase-card fade-in-on-scroll">
+                    <div class="showcase-image-container">
+                        <img src="assets/app-home.png" alt="الشاشة الرئيسية" loading="lazy">
+                    </div>
+                    <p class="showcase-label">الصفحة الرئيسية</p>
+                </div>
+                
+                <div class="showcase-card fade-in-on-scroll">
+                    <div class="showcase-image-container">
+                        <img src="assets/app-products.png" alt="قائمة المنتجات" loading="lazy">
+                    </div>
+                    <p class="showcase-label">تصفح المنتجات</p>
+                </div>
+                
+                <div class="showcase-card fade-in-on-scroll">
+                    <div class="showcase-image-container">
+                        <img src="assets/app-orders.png" alt="الطلبات" loading="lazy">
+                    </div>
+                    <p class="showcase-label">متابعة الطلبات</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="merchants" class="merchants-section">
-            <div class="container">
-                <h2 class="section-title">أصحاب المحلات، هِنا مكانكم.</h2>
-                <p class="section-subtitle">كبّر مبيعاتك وكسب عملاء جدد.</p>
-                <div class="steps-list">
-                    <div class="step-list-item"><span class="step-list-number">1</span><p>أنشئ حسابك</p></div>
-                    <div class="step-list-item"><span class="step-list-number">2</span><p>قدّم طلب الانضمام</p></div>
-                    <div class="step-list-item"><span class="step-list-number">3</span><p>اتفق مع إدارة هِنا</p></div>
-                    <div class="step-list-item"><span class="step-list-number">4</span><p>ابدأ استقبال الطلبات</p></div>
+    <!-- Merchants Section -->
+    <section id="merchants" class="merchants-section">
+        <div class="container">
+            <h2 class="section-title">أصحاب المحلات، هِنا مكانكم.</h2>
+            <p class="section-subtitle">كبّر مبيعاتك وكسب عملاء جدد.</p>
+            
+            <div class="steps-list">
+                <div class="step-list-item">
+                    <span class="step-list-number">1</span>
+                    <p>أنشئ حسابك</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">2</span>
+                    <p>قدّم طلب الانضمام</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">3</span>
+                    <p>اتفق مع إدارة هِنا</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">4</span>
+                    <p>ابدأ استقبال الطلبات</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="drivers-section">
-            <div class="container">
-                <h2 class="section-title">اشتغل مع هِنا.</h2>
-                <p class="section-subtitle">كن جزء من فريق التوصيل.</p>
-                <div class="steps-list">
-                    <div class="step-list-item"><span class="step-list-number">1</span><p>أنشئ حسابك</p></div>
-                    <div class="step-list-item"><span class="step-list-number">2</span><p>قدّم طلب الانضمام</p></div>
-                    <div class="step-list-item"><span class="step-list-number">3</span><p>تواصل مع إدارة هِنا</p></div>
-                    <div class="step-list-item"><span class="step-list-number">4</span><p>ابدأ</p></div>
+    <!-- Drivers Section -->
+    <section class="drivers-section">
+        <div class="container">
+            <h2 class="section-title">اشتغل مع هِنا.</h2>
+            <p class="section-subtitle">كن جزء من فريق التوصيل الموثوق.</p>
+            
+            <div class="steps-list">
+                <div class="step-list-item">
+                    <span class="step-list-number">1</span>
+                    <p>أنشئ حسابك</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">2</span>
+                    <p>قدّم طلب الانضمام</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">3</span>
+                    <p>تواصل مع إدارة هِنا</p>
+                </div>
+                <div class="step-list-item">
+                    <span class="step-list-number">4</span>
+                    <p>ابدأ</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="final-cta-section">
-            <div class="container">
-                <h2 class="final-cta-title">كل اللي محتاجه<br>هِنا.</h2>
-                <button class="primary-btn large-btn cta-btn" data-action="download">حَمِّل هِنا من هنا</button>
-                <div class="final-qr-group">
-                    <p class="final-qr-label">أو امسح رمز الاستجابة السريعة</p>
-                    <img src="assets/hena-download-qr.png" alt="QR code" class="qr-code-final" loading="lazy">
-                </div>
+    <!-- Final CTA Section -->
+    <section class="final-cta-section">
+        <div class="container">
+            <h2 class="final-cta-title">كل اللي محتاجه<br>هِنا.</h2>
+            <button class="primary-btn large-btn cta-btn" data-action="download">حَمِّل هِنا من هنا</button>
+            
+            <div class="final-qr-group">
+                <p class="final-qr-label">أو امسح رمز الاستجابة السريعة</p>
+                <img src="assets/hena-download-qr.png" alt="QR code" class="qr-code-final" loading="lazy">
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <footer class="footer"><div class="container"><p>&copy; 2026 هِنا. جميع الحقوق محفوظة.</p></div></footer>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 هِنا. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
