@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{const el=document.getElementById('downloadCount');if(el){const base=669;el.textContent=base.toLocaleString('ar-EG');}});
