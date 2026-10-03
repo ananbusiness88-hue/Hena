@@ -3,299 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هِنا — تطبيق التسوق الاجتماعي</title>
+    <title>هِنا — كل احتياجات بيتك في مكان واحد</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="navbar-logo">
-                <span class="logo-text">هِنا</span>
-            </div>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="#why" class="nav-link">ليه هِنا؟</a>
-                <a href="#services" class="nav-link">الخدمات</a>
-                <a href="#how" class="nav-link">إزاي بتشتغل؟</a>
-                <a href="#merchants" class="nav-link">لأصحاب المحلات</a>
-            </div>
-            <div class="navbar-cta">
-                <button class="btn btn-primary btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">
-                    حَمِّل التطبيق
-                </button>
-            </div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="#"><span>هِنا</span></a>
+    <div class="nav-links" id="navbarMenu">
+      <a href="#why">ليه هِنا؟</a>
+      <a href="#services">الخدمات</a>
+      <a href="#how">إزاي بتشتغل؟</a>
+      <a href="#merchants">أصحاب المحلات</a>
+    </div>
+    <button class="btn btn-primary btn-download nav-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل التطبيق <span>↓</span></button>
+    <button class="hamburger" id="hamburger" aria-label="القائمة"><i></i><i></i><i></i></button>
+  </div>
+</nav>
+
+<main>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-logo">هِنا</div>
+      <h1>كل احتياجات بيتك<br>في مكان واحد.</h1>
+      <p>تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-large btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل هِنا من هنا <span>↓</span></button>
+        <div class="qr-wrap">
+          <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fgithub.com%2Fananbusiness88-hue%2FHena%2Freleases%2Flatest%2Fdownload%2Fhena.apk" alt="QR Code لتحميل هِنا">
+          <small>امسح الكود<br>للتحميل</small>
         </div>
-    </nav>
+      </div>
+      <div class="downloads"><span class="avatars"><b>م</b><b>أ</b><b>ح</b><b>س</b></span><strong>+<span id="download-count">669</span></strong> تحميل</div>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">هِنا</h1>
-                <h2 class="hero-headline">كل احتياجات بيتك<br>في مكان واحد.</h2>
-                <p class="hero-description">تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</p>
-                
-                <div class="hero-cta-group">
-                    <button class="btn btn-large btn-primary btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">
-                        حَمِّل هِنا من هنا
-                    </button>
-                </div>
-
-                <div class="hero-footer">
-                    <div class="download-counter">
-                        <span id="download-count">669</span>+ تحميل
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="phone-frame">
-                    <img src="assets/app-home.png" alt="تطبيق هِنا" class="app-screenshot">
-                </div>
-                <div class="qr-section">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=https%3A%2F%2Fgithub.com%2Fananbusiness88-hue%2FHena%2Freleases%2Flatest%2Fdownload%2Fhena.apk" alt="QR code للتحميل" class="qr-code">
-                    <p class="qr-text">امسح الـ QR<br>للتحميل الفوري</p>
-                </div>
-            </div>
+    <div class="hero-art">
+      <div class="leaf leaf-a"></div><div class="leaf leaf-b"></div>
+      <div class="grocery-bag"><span>هِنا</span><i>🥬</i><i>🍅</i><i>🥛</i></div>
+      <div class="phone phone-one">
+        <div class="speaker"></div>
+        <div class="phone-screen">
+          <div class="screen-top"><span>هِنا</span><span>⌕</span></div>
+          <div class="promo">كل احتياجاتك<br>في مكان واحد</div>
+          <div class="mini-cats"><b>🥬</b><b>🥛</b><b>🍞</b><b>🍗</b></div>
+          <div class="product-row"><span>🍅</span><em>خضار طازة</em><strong>25.00</strong></div>
+          <div class="product-row"><span>🥛</span><em>ألبان</em><strong>28.00</strong></div>
+          <div class="bottom-nav">⌂　 طلباتي　 حسابي</div>
         </div>
-    </section>
-
-    <!-- Why Hena Section -->
-    <section id="why" class="why-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">ليه هِنا؟</h2>
-            </div>
-            
-            <h3 class="why-headline">وقت أقل.<br>مجهود أقل.<br>توفير أكثر.</h3>
-
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <div class="benefit-number">01</div>
-                    <h4 class="benefit-title">وفّر وقتك</h4>
-                    <p class="benefit-description">تصفح واختار كل احتياجاتك من مكان واحد، بدون ما تقضي وقت في التنقل بين محلات متفرقة.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-number">02</div>
-                    <h4 class="benefit-title">وفّر مجهودك</h4>
-                    <p class="benefit-description">طلبك يتجهز ويتوصل ليك بسهولة وسرعة، بدون ما تحمل أشياء ثقيلة أو تقف في طوابير.</p>
-                </div>
-
-                <div class="benefit-card">
-                    <div class="benefit-number">03</div>
-                    <h4 class="benefit-title">وفّر في مشترياتك</h4>
-                    <p class="benefit-description">أسعار تنافسية وعروض خاصة تخليك توفر في فاتورتك، كل مرة تشتري.</p>
-                </div>
-            </div>
+      </div>
+      <div class="phone phone-two">
+        <div class="speaker"></div>
+        <div class="phone-screen">
+          <div class="screen-title">طلباتي</div>
+          <div class="tabs"><b>الطلب الحالي</b><span>السابقة</span></div>
+          <div class="order-item"><span>🍅</span><div>طماطم<small>25.00 / كجم</small></div></div>
+          <div class="order-item"><span>🥒</span><div>خيار<small>18.00 / كجم</small></div></div>
+          <div class="order-item"><span>🥛</span><div>كامل الدسم<small>28.00</small></div></div>
+          <div class="order-total">إتمام الطلب</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Brand Statement Section -->
-    <section class="brand-statement">
-        <div class="brand-container">
-            <h2 class="brand-headline">مصمم للمنطقة<br>اللي إنت عايش فيها.</h2>
-            <p class="brand-description">هِنا معمول علشان يفهم احتياجات المجتمعات الجديدة وطريقة التسوق فيها، ويجمع الخدمات اللي بتحتاجها في حياتك اليومية.</p>
-        </div>
-    </section>
+<section class="benefit-bar" id="why">
+  <div><span class="benefit-icon green">◷</span><article><strong>وقت أقل</strong><small>تسوق بسهولة وسرعة</small></article></div>
+  <div><span class="benefit-icon blue">⚙</span><article><strong>مجهود أقل</strong><small>كل احتياجاتك من مكان واحد</small></article></div>
+  <div><span class="benefit-icon orange">◎</span><article><strong>توفير أكثر</strong><small>عروض وأسعار تنافسية</small></article></div>
+</section>
 
-    <!-- Services Section -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">كل احتياجات البيت</h2>
-                <p class="section-subtitle">اختار اللي محتاجه وكمّل يومك.</p>
-            </div>
+<section class="services" id="services">
+  <div class="section-head"><h2>كل احتياجات البيت</h2><p>اختار اللي محتاجه، وكل الباقي هِنا.</p></div>
+  <div class="category-grid">
+    <div class="category c-green"><span>🛒</span><strong>سوبر ماركت</strong><small>كل يومك</small></div>
+    <div class="category c-lightgreen"><span>🥬</span><strong>خضار وفاكهة</strong><small>طازة يوميًا</small></div>
+    <div class="category c-peach"><span>🥐</span><strong>مخبوزات</strong><small>طازة وساخنة</small></div>
+    <div class="category c-blue"><span>🍗</span><strong>فراخ ومجمدات</strong><small>اختيارات متنوعة</small></div>
+    <div class="category c-cream"><span>🥛</span><strong>ألبان</strong><small>منتجات يومية</small></div>
+    <div class="category c-yellow"><span>✨</span><strong>وأكثر</strong><small>لسه بنكبر</small></div>
+  </div>
+</section>
 
-            <div class="services-grid">
-                <div class="service-item">
-                    <div class="service-icon">🛒</div>
-                    <h4 class="service-name">سوبر ماركت</h4>
-                </div>
-                <div class="service-item">
-                    <div class="service-icon">🥬</div>
-                    <h4 class="service-name">خضار وفاكهة</h4>
-                </div>
-                <div class="service-item">
-                    <div class="service-icon">🍞</div>
-                    <h4 class="service-name">مخبوزات</h4>
-                </div>
-                <div class="service-item">
-                    <div class="service-icon">🍗</div>
-                    <h4 class="service-name">فراخ ومجمدات</h4>
-                </div>
-                <div class="service-item">
-                    <div class="service-icon">🥛</div>
-                    <h4 class="service-name">ألبان</h4>
-                </div>
-                <div class="service-item">
-                    <div class="service-icon">✨</div>
-                    <h4 class="service-name">وأكثر</h4>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="how" id="how">
+  <div class="section-head"><h2>من أول اختيارك لحد باب بيتك.</h2></div>
+  <div class="steps">
+    <div class="step"><span class="step-no">01</span><div class="step-icon green">🛍</div><h3>اختار</h3><p>تصفح المنتجات والخدمات اللي محتاجها.</p></div>
+    <div class="connector"></div>
+    <div class="step"><span class="step-no">02</span><div class="step-icon blue">▤</div><h3>اطلب</h3><p>أضف احتياجاتك وأكمل طلبك بسهولة.</p></div>
+    <div class="connector"></div>
+    <div class="step"><span class="step-no">03</span><div class="step-icon orange">🛵</div><h3>استلم</h3><p>طلبك يتجهز ويتوصل ليك بسرعة.</p></div>
+  </div>
+</section>
 
-    <!-- How It Works Section -->
-    <section id="how" class="how-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">من أول اختيارك<br>لحد باب بيتك.</h2>
-            </div>
+<section class="partners" id="merchants">
+  <div class="partner-card merchant">
+    <div class="partner-illustration shop-illus"><div class="awning"></div><div class="shop-window">هِنا</div><div class="plant">🌿</div></div>
+    <div class="partner-copy"><h2>أصحاب المحلات<br>هِنا مكانكم.</h2><ul><li>أنشئ حسابك</li><li>قدم طلب الانضمام</li><li>أضف منتجاتك</li><li>ابدأ استقبال الطلبات</li></ul><a class="btn btn-secondary" href="mailto:merchants@hena.app">انضم الآن ←</a></div>
+  </div>
+  <div class="partner-card driver">
+    <div class="partner-illustration driver-illus"><div class="rider">🧑‍🦱</div><div class="bike">🛵</div><div class="box">هِنا</div></div>
+    <div class="partner-copy"><h2>انضم كمندوب توصيل</h2><ul><li>أنشئ حسابك</li><li>قدم طلب الانضمام</li><li>ابدأ التوصيل</li><li>حقق دخل إضافي</li></ul><a class="btn btn-secondary blue-btn" href="mailto:drivers@hena.app">سجل الآن ←</a></div>
+  </div>
+</section>
 
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <h4 class="step-title">اختار</h4>
-                    <p class="step-description">تصفح المنتجات والخدمات اللي محتاجها.</p>
-                </div>
+<section class="final-cta">
+  <h2>كل اللي محتاجه<br>هِنا.</h2>
+  <button class="btn btn-primary btn-large btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل هِنا من هنا ↓</button>
+</section>
+</main>
 
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <h4 class="step-title">اطلب</h4>
-                    <p class="step-description">أضف احتياجاتك وأكمل طلبك بسهولة.</p>
-                </div>
-
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <h4 class="step-title">استلم</h4>
-                    <p class="step-description">طلبك يتجهز ويتوصّل ليك بسرعة.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- App Showcase Section -->
-    <section class="showcase-section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">التطبيق الآن متاح</h2>
-                <p class="section-subtitle">تجربة سلسة وسهلة على هاتفك.</p>
-            </div>
-
-            <div class="showcase-grid">
-                <div class="showcase-item fade-in-scroll">
-                    <img src="assets/app-home.png" alt="الشاشة الرئيسية" class="showcase-image">
-                </div>
-                <div class="showcase-item fade-in-scroll">
-                    <img src="assets/app-products.png" alt="تصفح المنتجات" class="showcase-image">
-                </div>
-                <div class="showcase-item fade-in-scroll">
-                    <img src="assets/app-orders.png" alt="إدارة الطلبات" class="showcase-image">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Merchants Section -->
-    <section id="merchants" class="merchants-section">
-        <div class="container">
-            <h2 class="section-title">أصحاب المحلات، هِنا مكانكم.</h2>
-            <p class="section-subtitle">فرصة لتوسيع نطاق عملك والوصول لعملاء جدد.</p>
-
-            <div class="opportunity-steps">
-                <div class="opportunity-step">
-                    <span class="step-number-circle">1</span>
-                    <h4>أنشئ حسابك</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">2</span>
-                    <h4>قدّم طلب الانضمام</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">3</span>
-                    <h4>اتفق مع إدارة هِنا</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">4</span>
-                    <h4>ابدأ استقبال الطلبات</h4>
-                </div>
-            </div>
-
-            <div class="opportunity-cta">
-                <a href="mailto:merchants@hena.app" class="btn btn-secondary">تواصل معنا</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Drivers Section -->
-    <section class="drivers-section">
-        <div class="container">
-            <h2 class="section-title">اشتغل مع هِنا.</h2>
-            <p class="section-subtitle">انضم لفريقنا وابدأ تحقق دخل إضافي.</p>
-
-            <div class="opportunity-steps">
-                <div class="opportunity-step">
-                    <span class="step-number-circle">1</span>
-                    <h4>أنشئ حسابك</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">2</span>
-                    <h4>قدّم طلب الانضمام</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">3</span>
-                    <h4>تواصل مع إدارة هِنا</h4>
-                </div>
-                <div class="opportunity-step">
-                    <span class="step-number-circle">4</span>
-                    <h4>ابدأ</h4>
-                </div>
-            </div>
-
-            <div class="opportunity-cta">
-                <a href="mailto:drivers@hena.app" class="btn btn-secondary">تواصل معنا</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Final CTA Section -->
-    <section class="final-cta-section">
-        <div class="container">
-            <h2 class="final-headline">كل اللي محتاجه<br>هِنا.</h2>
-            <button class="btn btn-large btn-primary btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">
-                حَمِّل هِنا من هنا
-            </button>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>هِنا</h4>
-                    <p>تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>روابط سريعة</h4>
-                    <ul>
-                        <li><a href="#why">ليه هِنا؟</a></li>
-                        <li><a href="#services">الخدمات</a></li>
-                        <li><a href="#how">إزاي بتشتغل؟</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>تواصل معنا</h4>
-                    <ul>
-                        <li><a href="mailto:info@hena.app">info@hena.app</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 هِنا. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+<footer><div class="footer-inner"><strong>هِنا</strong><span>تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</span><a href="mailto:info@hena.app">info@hena.app</a><small>© 2026 هِنا. جميع الحقوق محفوظة.</small></div></footer>
+<script src="script.js"></script>
 </body>
 </html>
