@@ -51,11 +51,52 @@ function initMobileMenu() {
 }
 
 // Download counter initialization
-function initDownloadCounters() {
+async function initDownloadCounters() {
     const counterElement = document.getElementById('download-count');
-    if (counterElement) {
-        const initialCount = 669;
-        counterElement.textContent = initialCount.toLocaleString('ar-EG');
+    if (!counterElement) return;
+
+    const apiBase = 'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
+    counterElement.textContent = '…';
+    counterElement.title = 'جارٍ تحميل عدد التنزيلات الفعلي';
+
+    try {
+        let totalDownloads = 0;
+        let page = 1;
+
+        while (true) {
+            const response = await fetch(
+                `${apiBase}?per_page=100&page=${page}`,
+                { cache: 'no-store' }
+            );
+
+            if (!response.ok) {
+                throw new Error(`GitHub API returned HTTP ${response.status}`);
+            }
+
+            const releases = await response.json();
+
+            for (const release of releases) {
+                for (const asset of (release.assets || [])) {
+                    if (asset.name.toLowerCase() === 'hena.apk') {
+                        totalDownloads += Number(asset.download_count) || 0;
+                    }
+                }
+            }
+
+            if (releases.length < 100) break;
+            page += 1;
+        }
+
+        counterElement.textContent = totalDownloads.toLocaleString('ar-EG');
+        counterElement.title = 'إجمالي تنزيلات ملف hena.apk المسجلة لدى GitHub';
+        counterElement.setAttribute(
+            'aria-label',
+            `إجمالي تنزيلات التطبيق: ${totalDownloads}`
+        );
+    } catch (error) {
+        console.error('تعذر تحميل عداد تنزيلات هِنا:', error);
+        counterElement.textContent = '—';
+        counterElement.title = 'تعذر تحميل عدد التنزيلات الفعلي حاليًا';
     }
 }
 
