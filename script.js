@@ -2,6 +2,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initDownloadCounters();
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            initDownloadCounters();
+        }
+    });
     initImageLoading();
     initScrollAnimations();
     initMobileMenu();
@@ -51,13 +56,21 @@ function initMobileMenu() {
 }
 
 // Download counter initialization
+let henaCounterFetchInFlight = false;
+let henaCounterLastFetchAt = 0;
+
 async function initDownloadCounters() {
     const counterElement = document.getElementById('download-count');
     if (!counterElement) return;
 
+    const now = Date.now();
+    if (henaCounterFetchInFlight || now - henaCounterLastFetchAt < 5000) return;
+
+    henaCounterFetchInFlight = true;
+    henaCounterLastFetchAt = now;
+
     const apiBase = 'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
-    counterElement.textContent = '…';
-    counterElement.title = 'جارٍ تحميل عدد التنزيلات الفعلي';
+    counterElement.title = 'جارٍ تحديث عدد التنزيلات الفعلي';
 
     try {
         let totalDownloads = 0;
@@ -88,15 +101,19 @@ async function initDownloadCounters() {
         }
 
         counterElement.textContent = totalDownloads.toLocaleString('ar-EG');
-        counterElement.title = 'إجمالي تنزيلات ملف hena.apk المسجلة لدى GitHub';
+        counterElement.title = 'إجمالي التنزيلات المسجلة لملفات hena.apk على GitHub؛ يتحدث عند فتح الصفحة والعودة إليها';
         counterElement.setAttribute(
             'aria-label',
             `إجمالي تنزيلات التطبيق: ${totalDownloads}`
         );
     } catch (error) {
         console.error('تعذر تحميل عداد تنزيلات هِنا:', error);
-        counterElement.textContent = '—';
-        counterElement.title = 'تعذر تحميل عدد التنزيلات الفعلي حاليًا';
+        if (!counterElement.textContent || counterElement.textContent === '…') {
+            counterElement.textContent = '—';
+        }
+        counterElement.title = 'تعذر تحديث عدد التنزيلات الفعلي حاليًا';
+    } finally {
+        henaCounterFetchInFlight = false;
     }
 }
 
