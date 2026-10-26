@@ -60,8 +60,8 @@ function initMobileMenu() {
 let henaCounterFetchInFlight = false;
 let henaCounterLastFetchAt = 0;
 
-// The count is the sum of the real download counts of every "hena.apk"
-// release asset on GitHub. The API is public, so no token is needed.
+// Sum the actual download counts for every APK asset across GitHub releases.
+// The API is public, so no token is needed.
 const HENA_RELEASES_API =
     'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
 
@@ -100,7 +100,7 @@ async function initDownloadCounters() {
 
             for (const release of releases) {
                 for (const asset of (release.assets || [])) {
-                    if (asset.name.toLowerCase() === 'hena.apk') {
+                    if (String(asset.name || '').toLowerCase().endsWith('.apk')) {
                         totalDownloads += Number(asset.download_count) || 0;
                     }
                 }
@@ -111,7 +111,7 @@ async function initDownloadCounters() {
         }
 
         counterElement.textContent = totalDownloads.toLocaleString('ar-EG');
-        counterElement.title = 'إجمالي التنزيلات المسجلة لملفات hena.apk على GitHub؛ يتحدث عند فتح الصفحة والعودة إليها';
+        counterElement.title = 'إجمالي تنزيلات ملفات APK المسجلة على GitHub؛ يتحدث عند فتح الصفحة والعودة إليها';
         counterElement.setAttribute(
             'aria-label',
             `إجمالي تنزيلات التطبيق: ${totalDownloads}`
