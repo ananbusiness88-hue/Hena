@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             initDownloadCounters();
         }
     });
+    initDownloadTracking();
     initImageLoading();
     initScrollAnimations();
     initMobileMenu();
@@ -59,6 +60,11 @@ function initMobileMenu() {
 let henaCounterFetchInFlight = false;
 let henaCounterLastFetchAt = 0;
 
+// The count is the sum of the real download counts of every "hena.apk"
+// release asset on GitHub. The API is public, so no token is needed.
+const HENA_RELEASES_API =
+    'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
+
 async function initDownloadCounters() {
     const counterElement = document.getElementById('download-count');
     if (!counterElement) return;
@@ -69,7 +75,6 @@ async function initDownloadCounters() {
     henaCounterFetchInFlight = true;
     henaCounterLastFetchAt = now;
 
-    const apiBase = 'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
     counterElement.title = 'جارٍ تحديث عدد التنزيلات الفعلي';
 
     try {
@@ -78,9 +83,14 @@ async function initDownloadCounters() {
 
         while (true) {
             const response = await fetch(
-                `${apiBase}?per_page=100&page=${page}`,
+                `${HENA_RELEASES_API}?per_page=100&page=${page}`,
                 { cache: 'no-store' }
             );
+
+            if (response.status === 403 || response.status === 429) {
+                // GitHub rate limit for anonymous requests.
+                throw new Error(`Rate limited by the GitHub API (HTTP ${response.status})`);
+            }
 
             if (!response.ok) {
                 throw new Error(`GitHub API returned HTTP ${response.status}`);
@@ -106,6 +116,7 @@ async function initDownloadCounters() {
             'aria-label',
             `إجمالي تنزيلات التطبيق: ${totalDownloads}`
         );
+        counterElement.setAttribute('data-count', String(totalDownloads));
     } catch (error) {
         console.error('تعذر تحميل عداد تنزيلات هِنا:', error);
         if (!counterElement.textContent || counterElement.textContent === '…') {
@@ -115,6 +126,22 @@ async function initDownloadCounters() {
     } finally {
         henaCounterFetchInFlight = false;
     }
+}
+
+// Count the click itself, so the number reacts immediately even before
+// GitHub refreshes its own download_count value.
+function initDownloadTracking() {
+    document.querySelectorAll('.btn-download, a.qr').forEach(el => {
+        el.addEventListener('click', () => {
+            const counterElement = document.getElementById('download-count');
+            if (!counterElement) return;
+
+            const current = Number(counterElement.getAttribute('data-count')) || 0;
+
+            counterElement.setAttribute('data-count', String(current + 1));
+            counterElement.textContent = (current + 1).toLocaleString('ar-EG');
+        });
+    });
 }
 
 // Image loading with error handling

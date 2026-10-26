@@ -14,3 +14,12 @@ a{text-decoration:none;color:inherit}.navbar{position:fixed;top:0;left:0;right:0
 footer{background:#102e2a;color:#dbe7e2;padding:22px}.footer-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:25px;flex-wrap:wrap;font-size:12px}.footer-inner strong{font-size:28px;color:#5fc08e}.footer-inner a{color:#b9d9ca}.footer-inner small{margin-right:auto;color:#82958f}
 @media(max-width:850px){.nav-links{display:none}.nav-download{display:none}.hamburger{display:block;margin-right:auto}.hero-inner{grid-template-columns:1fr}.hero-copy{order:1;text-align:center;padding:0}.hero-logo{font-size:58px}.hero h1{font-size:37px}.hero-actions{justify-content:center}.downloads{justify-content:center}.hero-art{order:2;height:410px;transform:scale(.9);transform-origin:center top}.benefit-bar{margin:0 15px;grid-template-columns:1fr}.benefit-bar>div{padding:10px}.benefit-bar>div+div:before{display:none}.category-grid{grid-template-columns:repeat(3,1fr)}.partners{grid-template-columns:1fr}.steps{grid-template-columns:1fr;gap:18px}.connector{width:50px;margin:auto;transform:rotate(90deg)}}
 @media(max-width:520px){.hero{padding-top:92px}.hero h1{font-size:30px}.hero-copy>p{font-size:13px}.hero-actions{flex-direction:column}.qr-wrap{order:2}.hero-art{transform:scale(.72);height:315px;margin-top:-25px}.phone-one{right:calc(50% - 85px)}.phone-two{right:calc(50% + 40px);top:75px}.grocery-bag{left:calc(50% - 150px);transform:scale(.8);transform-origin:bottom left}.category-grid{grid-template-columns:repeat(2,1fr)}.category{height:120px}.partner-card{grid-template-columns:1fr}.partner-illustration{min-height:140px}.footer-inner{justify-content:center;text-align:center}.footer-inner small{margin:0;width:100%}}
+
+/* ---- v1.0.3 download hub additions ---- */
+.qr-wrap a.qr{display:block;line-height:0;border-radius:10px;overflow:hidden}
+.qr-wrap a.qr img{width:76px;height:76px;display:block}
+.build-meta{margin-top:14px;font-size:12.5px;color:var(--muted)}
+.build-meta strong{color:var(--green);font-weight:800}
+.final-cta .cta-note{margin:14px 0 0;font-size:13px;opacity:.85}
+.final-cta .cta-backup{display:inline-block;margin-top:10px;font-size:12px;color:#cfe8dc;text-decoration:underline;text-underline-offset:3px}
+.final-cta .cta-backup:hover{color:#fff}
