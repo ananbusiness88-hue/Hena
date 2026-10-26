@@ -56,76 +56,15 @@ function initMobileMenu() {
     }
 }
 
-// Download counter initialization
-let henaCounterFetchInFlight = false;
-let henaCounterLastFetchAt = 0;
-
-// Sum the actual download counts for every APK asset across GitHub releases.
-// The API is public, so no token is needed.
-const HENA_RELEASES_API =
-    'https://api.github.com/repos/ananbusiness88-hue/Hena/releases';
-
-async function initDownloadCounters() {
+// Download counter initialization: requested starting display value.
+function initDownloadCounters() {
     const counterElement = document.getElementById('download-count');
     if (!counterElement) return;
 
-    const now = Date.now();
-    if (henaCounterFetchInFlight || now - henaCounterLastFetchAt < 5000) return;
-
-    henaCounterFetchInFlight = true;
-    henaCounterLastFetchAt = now;
-
-    counterElement.title = 'جارٍ تحديث عدد التنزيلات الفعلي';
-
-    try {
-        let totalDownloads = 0;
-        let page = 1;
-
-        while (true) {
-            const response = await fetch(
-                `${HENA_RELEASES_API}?per_page=100&page=${page}`,
-                { cache: 'no-store' }
-            );
-
-            if (response.status === 403 || response.status === 429) {
-                // GitHub rate limit for anonymous requests.
-                throw new Error(`Rate limited by the GitHub API (HTTP ${response.status})`);
-            }
-
-            if (!response.ok) {
-                throw new Error(`GitHub API returned HTTP ${response.status}`);
-            }
-
-            const releases = await response.json();
-
-            for (const release of releases) {
-                for (const asset of (release.assets || [])) {
-                    if (String(asset.name || '').toLowerCase().endsWith('.apk')) {
-                        totalDownloads += Number(asset.download_count) || 0;
-                    }
-                }
-            }
-
-            if (releases.length < 100) break;
-            page += 1;
-        }
-
-        counterElement.textContent = totalDownloads.toLocaleString('ar-EG');
-        counterElement.title = 'إجمالي تنزيلات ملفات APK المسجلة على GitHub؛ يتحدث عند فتح الصفحة والعودة إليها';
-        counterElement.setAttribute(
-            'aria-label',
-            `إجمالي تنزيلات التطبيق: ${totalDownloads}`
-        );
-        counterElement.setAttribute('data-count', String(totalDownloads));
-    } catch (error) {
-        console.error('تعذر تحميل عداد تنزيلات هِنا:', error);
-        if (!counterElement.textContent || counterElement.textContent === '…') {
-            counterElement.textContent = '—';
-        }
-        counterElement.title = 'تعذر تحديث عدد التنزيلات الفعلي حاليًا';
-    } finally {
-        henaCounterFetchInFlight = false;
-    }
+    counterElement.textContent = '٥';
+    counterElement.setAttribute('data-count', '5');
+    counterElement.setAttribute('aria-label', 'عدد التنزيلات المعروض: 5');
+    counterElement.title = 'العداد يبدأ من 5';
 }
 
 // Count the click itself, so the number reacts immediately even before
