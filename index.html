@@ -17,11 +17,11 @@ a{text-decoration:none;color:inherit}.navbar{position:fixed;top:0;left:0;right:0
 .nav-inner{height:72px;max-width:1120px;margin:auto;padding:0 22px;display:flex;align-items:center;gap:30px}.brand{font-size:34px;font-weight:800;color:var(--green);letter-spacing:-2px;display:flex;align-items:center}.brand img{display:block;width:88px;height:auto}.nav-links{display:flex;gap:42px;align-items:center;flex:1;justify-content:center}.nav-links a{font-size:14px;font-weight:700}.nav-links a:hover{color:var(--green)}
 .btn{border:0;border-radius:999px;padding:12px 24px;font:700 14px var(--font);cursor:pointer;transition:.25s;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn-primary{background:var(--green);color:#fff;box-shadow:0 10px 25px rgba(45,149,109,.18)}.btn-primary:hover{transform:translateY(-2px);background:#257f5d}.btn-secondary{background:#fff;border:1px solid var(--green);color:var(--green)}.btn-large{padding:15px 34px;font-size:16px}.hamburger{display:none;background:none;border:0}.hamburger i{display:block;width:24px;height:3px;background:var(--dark);margin:4px;border-radius:5px}
 .hero{padding:105px 20px 20px}.hero-inner{max-width:1120px;min-height:475px;margin:auto;display:grid;grid-template-columns:1.05fr .95fr;gap:10px;align-items:center}.hero-copy{order:2;padding:0 20px 10px 0}.hero-logo{font-size:76px;line-height:1;color:var(--green);font-weight:800;margin-bottom:8px}.hero-logo-img{display:block;width:220px;max-width:75%;height:auto;margin:0 0 8px auto}.hero h1{font-size:47px;line-height:1.2;color:#102d3b;font-weight:800;margin-bottom:13px}.hero-copy>p{font-size:17px;color:var(--muted);margin-bottom:20px}.hero-actions{display:flex;align-items:center;gap:18px}.qr-wrap{display:flex;align-items:center;justify-content:center;gap:13px;background:linear-gradient(135deg,#fff 0%,#fbfffc 100%);padding:13px 15px;border:1px solid #e3eee7;border-radius:25px;box-shadow:var(--shadow);flex:0 0 auto}
-.qr-frame{position:relative;isolation:isolate;width:146px;height:146px;padding:8px;border-radius:23px;background:#fff;display:grid;place-items:center;flex:0 0 auto;box-shadow:0 7px 20px rgba(45,149,109,.12)}
+.qr-frame{position:relative;isolation:isolate;width:146px;height:146px;padding:5px;border-radius:23px;background:#fff;display:grid;place-items:center;flex:0 0 auto;box-shadow:0 7px 20px rgba(45,149,109,.12)}
 .qr-frame:before{content:"";position:absolute;inset:0;border-radius:23px;padding:3px;background:conic-gradient(from 0deg,#2d956d,#8bcba6,#82b9df,#efb17a,#2d956d);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:qrBorderSpin 5s linear infinite;pointer-events:none}
 .qr-frame:after{content:"";position:absolute;inset:5px;border:1px solid rgba(45,149,109,.12);border-radius:17px;pointer-events:none}
-.qr{width:128px;height:128px;display:grid;place-items:center;position:relative;z-index:1;padding:5px;border-radius:17px;background:#fff}
-.qr-img{width:118px;height:118px;display:block;object-fit:contain;border-radius:9px}
+.qr{width:136px;height:136px;display:block;position:relative;z-index:1;padding:0;border-radius:11px;overflow:hidden;background:#fff}
+.qr-img{width:100%;height:100%;display:block;object-fit:cover;border-radius:0}
 .qr-side{width:66px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center}
 .qr-side small{font-size:11px;line-height:1.5;color:#48655a;font-weight:700}
 .qr-cart{width:53px;height:53px;display:grid;place-items:center;color:var(--green);animation:cartNudge 2.4s ease-in-out infinite;transform-origin:center center}
@@ -36,7 +36,7 @@ a{text-decoration:none;color:inherit}.navbar{position:fixed;top:0;left:0;right:0
 .final-cta{margin-top:0;padding:40px 20px;text-align:center;background:linear-gradient(135deg,#143f36,#2d956d);color:#fff}.final-cta h2{font-size:34px;color:#fff;line-height:1.25;margin-bottom:18px}.final-cta .btn{background:#fff;color:#287b5b}
 footer{background:#102e2a;color:#dbe7e2;padding:22px}.footer-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:25px;flex-wrap:wrap;font-size:12px}.footer-inner strong{font-size:28px;color:#5fc08e}.footer-inner a{color:#b9d9ca}.footer-inner small{margin-right:auto;color:#82958f}
 @media(max-width:850px){.nav-links{display:none}.nav-download{display:none}.hamburger{display:block;margin-right:auto}.hero-inner{grid-template-columns:1fr}.hero-copy{order:1;text-align:center;padding:0}.hero-logo{font-size:58px}.hero-logo-img{margin:0 auto 8px;width:200px}.hero h1{font-size:37px}.hero-actions{justify-content:center}.downloads{justify-content:center}.hero-art{order:2;height:410px;transform:scale(.9);transform-origin:center top}.benefit-bar{margin:0 15px;grid-template-columns:1fr}.benefit-bar>div{padding:10px}.benefit-bar>div+div:before{display:none}.category-grid{grid-template-columns:repeat(3,1fr)}.partners{grid-template-columns:1fr}.steps{grid-template-columns:1fr;gap:18px}.connector{width:50px;margin:auto;transform:rotate(90deg)}}
-@media(max-width:520px){.qr-wrap{gap:10px;padding:10px;border-radius:20px}.qr-frame{width:132px;height:132px;padding:7px;border-radius:20px}.qr-frame:before{border-radius:20px}.qr{width:116px;height:116px;padding:4px}.qr-img{width:108px;height:108px}.qr-side{width:55px}.qr-cart{width:46px;height:46px}.qr-side small{font-size:10px}.hero{padding-top:92px}.hero h1{font-size:30px}.hero-copy>p{font-size:13px}.hero-actions{flex-direction:column}.qr-wrap{order:2}.hero-art{transform:scale(.72);height:315px;margin-top:-25px}.phone-one{right:calc(50% - 85px)}.phone-two{right:calc(50% + 40px);top:75px}.grocery-bag{left:calc(50% - 150px);transform:scale(.8);transform-origin:bottom left}.category-grid{grid-template-columns:repeat(2,1fr)}.category{height:120px}.partner-card{grid-template-columns:1fr}.partner-illustration{min-height:140px}.footer-inner{justify-content:center;text-align:center}.footer-inner small{margin:0;width:100%}}
+@media(max-width:520px){.qr-wrap{gap:10px;padding:10px;border-radius:20px}.qr-frame{width:132px;height:132px;padding:5px;border-radius:20px}.qr-frame:before{border-radius:20px}.qr{width:122px;height:122px;padding:0;border-radius:9px}.qr-img{width:100%;height:100%}.qr-side{width:55px}.qr-cart{width:46px;height:46px}.qr-side small{font-size:10px}.hero{padding-top:92px}.hero h1{font-size:30px}.hero-copy>p{font-size:13px}.hero-actions{flex-direction:column}.qr-wrap{order:2}.hero-art{transform:scale(.72);height:315px;margin-top:-25px}.phone-one{right:calc(50% - 85px)}.phone-two{right:calc(50% + 40px);top:75px}.grocery-bag{left:calc(50% - 150px);transform:scale(.8);transform-origin:bottom left}.category-grid{grid-template-columns:repeat(2,1fr)}.category{height:120px}.partner-card{grid-template-columns:1fr}.partner-illustration{min-height:140px}.footer-inner{justify-content:center;text-align:center}.footer-inner small{margin:0;width:100%}}
 
     </style>
 </head>
@@ -66,7 +66,7 @@ footer{background:#102e2a;color:#dbe7e2;padding:22px}.footer-inner{max-width:112
         <button class="btn btn-primary btn-large btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل هِنا من هنا <span>↓</span></button>
         <div class="qr-wrap" aria-label="امسح رمز QR لتحميل تطبيق هِنا">
           <div class="qr-frame">
-            <a class="qr" href="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk" title="تحميل هِنا مباشرة" aria-label="تحميل تطبيق هِنا"><img class="qr-img" src="hena-download-qr.png?v=20261027-2" width="684" height="684" alt="رمز QR لتحميل تطبيق هِنا"></a>
+            <a class="qr" href="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk" title="تحميل هِنا مباشرة" aria-label="تحميل تطبيق هِنا"><img class="qr-img" src="hena-download-qr.png?v=20261027-3" width="684" height="684" alt="رمز QR لتحميل تطبيق هِنا"></a>
           </div>
           <div class="qr-side">
             <div class="qr-cart" aria-hidden="true">
@@ -82,7 +82,6 @@ footer{background:#102e2a;color:#dbe7e2;padding:22px}.footer-inner{max-width:112
           </div>
         </div>
       </div>
-      <div class="build-meta">النسخة الحالية <strong>v1.0.4</strong> · 33.71 MB · Android 7.0+</div>
       <div class="downloads"><span class="avatars"><b>م</b><b>أ</b><b>ح</b><b>س</b></span><strong>+<span id="download-count" aria-live="polite" title="جارٍ تحميل عدد التنزيلات الفعلي">…</span></strong> تحميل</div>
     </div>
 
@@ -158,7 +157,6 @@ footer{background:#102e2a;color:#dbe7e2;padding:22px}.footer-inner{max-width:112
 <section class="final-cta">
   <h2>كل اللي محتاجه<br>هِنا.</h2>
   <button class="btn btn-primary btn-large btn-download" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل هِنا من هنا ↓</button>
-  <p class="cta-note">النسخة v1.0.4 · 33.71 MB · Android 7.0 وأحدث</p>
   <a class="cta-backup" href="https://github.com/ananbusiness88-hue/Hena/releases/download/v1.0.4/hena.apk" download>رابط مباشر للملف (v1.0.4 · hena.apk)</a>
 </section>
 </main>
