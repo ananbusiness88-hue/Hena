@@ -1,0 +1,81 @@
+﻿# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+build/
+coverage/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Android generated
+android/.gradle/
+android/app/build/
+android/local.properties
+
+# iOS generated
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/.last_build_id
+
+# Windows / Linux / macOS generated
+windows/flutter/ephemeral/
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+
+# Local dumps / debug exports
+*.log
+analyze_machine.txt
+auth_review_dump.txt
+lib_full_dump.txt
+registration_trace.txt
+registration_trace_small.txt
+cloud_data.sql
+local_data.sql
+remote_schema.sql
+schema_check.sql
+storage_policies.txt
+create_unified_order.txt
+handle_new_user.txt
+
+# Local backup copies - Git itself provides version history
+*.bak
+*.bak_*
+*.backup
+*.backup-*
+*.before_*
+*.before-*
+*.broken-*
+*.encoding-backup
+
+# Local backup copies - Git itself provides version history
+*.bak
+*.bak_*
+*.backup
+*.backup-*
+*.before_*
+*.before-*
+*.broken-*
+*.encoding-backup
+
+# Accidental empty file
+-Pattern
+
+# Backup files
+*.bak*
+*.backup*
+*.broken*
+android/key.properties
+android/*.jks
+android/*.keystore

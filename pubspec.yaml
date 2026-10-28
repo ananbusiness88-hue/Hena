@@ -1,0 +1,67 @@
+name: app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.6+6
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  shared_preferences: ^2.5.5
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^3.4.2
+  supabase_flutter: ^2.17.1
+  flutter_dotenv: ^6.0.1
+  image_picker: ^1.2.3
+  url_launcher: ^6.3.2
+  firebase_core: ^4.15.0
+  firebase_messaging: ^16.7.0
+  flutter_local_notifications: ^22.3.1
+  firebase_analytics: ^12.6.0
+  video_player: ^2.14.0
+  emoji_picker_flutter: 4.5.4
+  thermal_printer_billbay: 1.0.9
+  http: ^1.6.0
+
+dev_dependencies:
+  video_player_platform_interface: ^6.9.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.8
+  flutter_launcher_icons: ^0.14.4
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/branding/hena_app_icon.png
+  remove_alpha_ios: true
+flutter:
+  uses-material-design: true
+
+  assets:
+    # Only the assets that are actually referenced by the Dart code are
+    # bundled. Listing the whole assets/branding/ folder shipped about 19 MB of
+    # unused artwork (old logos, splash drafts, store listing screenshots and
+    # a duplicate of the intro video) inside the APK.
+    - assets/branding/hena_logo.png
+    - assets/branding/intoApp.mp4
+    - assets/hena_category_assets/category_illustrations/
+    - .env
+    - .env.production
+
+
+
+
+
+
+
+
+
+  fonts:
+    - family: NotoSansArabic
+      fonts:
+        - asset: assets/fonts/NotoSansArabic.ttf

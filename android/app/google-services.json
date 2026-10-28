@@ -1,0 +1,29 @@
+﻿{
+  "project_info": {
+    "project_number": "1054737469031",
+    "project_id": "hena-marketplace",
+    "storage_bucket": "hena-marketplace.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054737469031:android:ec15ef09b86870ca5b8ec2",
+        "android_client_info": {
+          "package_name": "com.hena.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdbxWZiFPWLPdQyJYKU0waxgkchk4UcTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

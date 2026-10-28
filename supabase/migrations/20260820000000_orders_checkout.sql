@@ -1,0 +1,1 @@
+-- Checkout migration placeholder. Checkout tables and constraints are defined in initial_schema.

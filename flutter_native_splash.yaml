@@ -1,0 +1,11 @@
+﻿flutter_native_splash:
+  android: true
+  ios: false
+  web: false
+
+  color: "#F5F2EA"
+  fullscreen: true
+
+  android_12:
+    color: "#F5F2EA"
+    image: assets/branding/hena_app_icon.png
