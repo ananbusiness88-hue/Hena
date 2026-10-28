@@ -9,6 +9,8 @@ From the repository root, create local environment files using PowerShell:
 ```powershell
 Copy-Item .env.example .env
 Copy-Item .env.example .env.production
+```
+
 Edit both files and replace the example values with the correct URL and publishable key for each Supabase environment.
 
 - `.env` is used for local mode.
