@@ -1,17 +1,44 @@
-# app
+# Hena
 
-A new Flutter project.
+Hena is a Flutter marketplace application backed by Supabase.
 
-## Getting Started
+## Environment configuration
 
-This project is a starting point for a Flutter application.
+From the repository root, create local environment files using PowerShell:
 
-A few resources to get you started if this is your first Flutter project:
+```powershell
+Copy-Item .env.example .env
+Copy-Item .env.example .env.production
+Edit both files and replace the example values with the correct URL and publishable key for each Supabase environment.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- `.env` is used for local mode.
+- `.env.production` is used when building with `--dart-define=SUPABASE_MODE=production`.
+- Start local Supabase with `supabase start` and inspect its configuration with `supabase status`.
+- Do not commit real environment files or put Supabase secret/service_role keys in the Flutter app.
+- Android builds also require the intended Firebase configuration.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Verify the source
+
+```powershell
+flutter pub get
+flutter analyze
+flutter test
+```
+
+## Run locally
+
+After configuring `.env` and starting the required local services:
+
+```powershell
+flutter run
+```
+
+## Build production Android APK
+
+After configuring `.env.production`:
+
+```powershell
+flutter build apk --release --dart-define=SUPABASE_MODE=production
+```
+
+Review the migrations in `supabase/migrations` before applying database changes to any environment.
