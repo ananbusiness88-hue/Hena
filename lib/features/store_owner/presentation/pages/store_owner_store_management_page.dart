@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/services/image_upload_service.dart';
@@ -774,6 +775,18 @@ class _CategoriesCard extends StatelessWidget {
   }
 }
 
+String _normalizeSearchText(String value) {
+  return value
+      .trim()
+      .toLowerCase()
+      .replaceAll(RegExp('[\u{0623}\u{0625}\u{0622}\u{0671}]'), '\u{0627}')
+      .replaceAll('\u{0649}', '\u{064A}')
+      .replaceAll('\u{0624}', '\u{0648}')
+      .replaceAll('\u{0626}', '\u{064A}')
+      .replaceAll('\u{0629}', '\u{0647}')
+      .replaceAll(RegExp('[\u{0640}\u{064B}-\u{0652}\u{0670}]'), '');
+}
+
 class _ProductsCard extends StatefulWidget {
   final String storeId;
   final AsyncValue<List<Product>> productsAsync;
@@ -795,6 +808,34 @@ class _ProductsCard extends StatefulWidget {
 
 class _ProductsCardState extends State<_ProductsCard> {
   String _productSort = 'nameAsc';
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() => _searchQuery = '');
+  }
+
+  List<Product> _filterProducts(List<Product> products) {
+    final query = _normalizeSearchText(_searchQuery);
+
+    if (query.isEmpty) {
+      return products;
+    }
+
+    return products
+        .where(
+          (product) =>
+              _normalizeSearchText(product.name).contains(query),
+        )
+        .toList();
+  }
 
   List<Product> _sortProducts(List<Product> products) {
     final sorted = List<Product>.of(products);
@@ -854,7 +895,9 @@ class _ProductsCardState extends State<_ProductsCard> {
           );
         }
 
-        final sortedProducts = _sortProducts(storeProducts);
+        final filteredProducts = _filterProducts(storeProducts);
+        final sortedProducts = _sortProducts(filteredProducts);
+        final hasSearchQuery = _searchQuery.trim().isNotEmpty;
 
         return Card(
           child: Padding(
@@ -862,6 +905,33 @@ class _ProductsCardState extends State<_ProductsCard> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
+                  child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      setState(() => _searchQuery = value);
+                    },
+                    textInputAction: TextInputAction.search,
+                    decoration: InputDecoration(
+                      labelText:
+                          '\u{627}\u{62D}\u{62C}\u{644} \u{627}\u{633}\u{645} \u{627}\u{644}\u{645}\u{646}\u{62A}\u{62C}',
+                      hintText:
+                          '\u{627}\u{628}\u{62D}\u{62B} \u{639}\u{646} \u{645}\u{646}\u{62A}\u{62C}',
+                      prefixIcon: const Icon(Icons.search),
+                      suffixIcon: _searchQuery.isEmpty
+                          ? null
+                          : IconButton(
+                              tooltip:
+                                  '\u{645}\u{633}\u{62D} \u{627}\u{644}\u{628}\u{62D}\u{62B}',
+                              icon: const Icon(Icons.clear),
+                              onPressed: _clearSearch,
+                            ),
+                      border: const OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
                   child: DropdownButtonFormField<String>(
@@ -904,6 +974,13 @@ class _ProductsCardState extends State<_ProductsCard> {
                     },
                   ),
                 ),
+                if (hasSearchQuery && filteredProducts.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(8, 8, 8, 20),
+                    child: Text(
+                      '\u{644}\u{627} \u{62A}\u{648}\u{62C}\u{62F} \u{645}\u{646}\u{62A}\u{62C}\u{627}\u{62A} \u{645}\u{637}\u{627}\u{628}\u{642}\u{629} \u{644}\u{628}\u{62D}\u{62B}\u{643}.',
+                    ),
+                  ),
                 ...sortedProducts.map((product) {
                   return ListTile(
                     contentPadding: const EdgeInsets.symmetric(
@@ -922,6 +999,28 @@ class _ProductsCardState extends State<_ProductsCard> {
                         Text(
                           '${product.price.toStringAsFixed(2)} \u{62C}.\u{645}',
                         ),
+                        if (product.additionalFee > 0) ...[
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFFF1E0),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: const Color(0xFFE0A64B)),
+                            ),
+                            child: Text(
+                              '\u{0631}\u{0633}\u{0648}\u{0645} \u{0625}\u{0636}\u{0627}\u{0641}\u{064A}\u{0629}: ${product.additionalFee.toStringAsFixed(2)} \u{62C}.\u{645}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF8A5A12),
+                              ),
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 4),
                         Text(
                           product.isAvailable
@@ -1045,13 +1144,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
       StorePrinterSettingsService();
   final ThermalPrinterService _printerService = ThermalPrinterService();
 
-  static const List<CodePage> _codePages = [
-    CodePage.utf8,
-    CodePage.utf8Alt,
-    CodePage.win1256,
-    CodePage.cp864,
-    CodePage.cp720,
-  ];
 
   StorePrinterSettings _settings = const StorePrinterSettings();
 
@@ -1059,7 +1151,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
 
   String? _selectedAddress;
   PaperSize _paperSize = PaperSize.mm80;
-  CodePage _codePage = CodePage.utf8;
 
   bool _loading = true;
   bool _refreshing = false;
@@ -1090,7 +1181,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
         _settings = settings;
         _selectedAddress = settings.printerAddress;
         _paperSize = settings.paperSize;
-        _codePage = settings.codePage;
         _loading = false;
       });
     } catch (error) {
@@ -1216,7 +1306,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
         printerName: savedName,
         printerAddress: address,
         paperSize: _paperSize,
-        codePage: _codePage,
       );
 
       final settings = await _settingsService.load(widget.storeId);
@@ -1343,7 +1432,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
         address: address,
         order: order,
         paperSize: _paperSize,
-        codePage: _codePage,
       );
 
       if (!mounted) {
@@ -1386,29 +1474,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
     }
   }
 
-  String _codePageLabel(CodePage page) {
-    if (page == CodePage.utf8) {
-      return 'UTF-8  PC10001';
-    }
-
-    if (page == CodePage.utf8Alt) {
-      return 'UTF-8  FS &';
-    }
-
-    if (page == CodePage.win1256) {
-      return 'Windows-1256  CP46';
-    }
-
-    if (page == CodePage.cp864) {
-      return 'CP864  CP22';
-    }
-
-    if (page == CodePage.cp720) {
-      return 'CP720  CP32';
-    }
-
-    return page.name;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -1656,56 +1721,6 @@ class _StorePrinterSettingsCardState extends State<_StorePrinterSettingsCard> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 14),
-                    const Text(
-                      '\u{62A}\u{631}\u{645}\u{64A}\u{632} \u{627}\u{644}\u{644}\u{63A}\u{629} \u{627}\u{644}\u{639}\u{631}\u{628}\u{64A}\u{629}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w900,
-                        color: Color(0xFF33445C),
-                      ),
-                    ),
-                    const SizedBox(height: 7),
-                    InputDecorator(
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.translate_outlined),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10,
-                        ),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<CodePage>(
-                          isExpanded: true,
-                          value: _codePage,
-                          items: _codePages
-                              .map(
-                                (page) => DropdownMenuItem<CodePage>(
-                                  value: page,
-                                  child: Text(_codePageLabel(page)),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (_testing || _saving)
-                              ? null
-                              : (value) {
-                                  if (value == null) {
-                                    return;
-                                  }
-
-                                  setState(() {
-                                    _codePage = value;
-                                  });
-                                },
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 16),
                     Wrap(
                       spacing: 8,
@@ -1822,6 +1837,7 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _priceController;
+  late final TextEditingController _additionalFeeController;
   late final TextEditingController _sellingValueController;
 
   String? _categoryId;
@@ -1849,6 +1865,11 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
     );
     _priceController = TextEditingController(
       text: product?.price.toString() ?? '',
+    );
+    _additionalFeeController = TextEditingController(
+      text: product == null || product.additionalFee == 0
+          ? '0'
+          : product.additionalFee.toString(),
     );
     _sellingValueController = TextEditingController(
       text: product?.sellingValue.toString() ?? '1',
@@ -1894,6 +1915,7 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
     _nameController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
+    _additionalFeeController.dispose();
     _sellingValueController.dispose();
 
     for (final row in _pricingRows) {
@@ -1935,6 +1957,10 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
     final price = double.tryParse(
       _priceController.text.trim().replaceAll(',', '.'),
     );
+    final additionalFeeText = _additionalFeeController.text.trim();
+    final additionalFee = additionalFeeText.isEmpty
+        ? 0.0
+        : double.tryParse(additionalFeeText.replaceAll(',', '.'));
     final sellingValue = double.tryParse(
       _sellingValueController.text.trim().replaceAll(',', '.'),
     );
@@ -1956,6 +1982,13 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
     if (price == null || price <= 0) {
       _showError(
         '\u{64A}\u{631}\u{62C}\u{649} \u{625}\u{62F}\u{62E}\u{627}\u{644} \u{633}\u{639}\u{631} \u{635}\u{62D}\u{64A}\u{62D} \u{623}\u{643}\u{628}\u{631} \u{645}\u{646} \u{635}\u{641}\u{631}.',
+      );
+      return;
+    }
+
+    if (additionalFee == null || additionalFee < 0) {
+      _showError(
+        '\u{0623}\u{062F}\u{062E}\u{0644} \u{0642}\u{064A}\u{0645}\u{0629} \u{0631}\u{0633}\u{0648}\u{0645} \u{0625}\u{0636}\u{0627}\u{0641}\u{064A}\u{0629} \u{0635}\u{062D}\u{064A}\u{062D}\u{0629} \u{0644}\u{0627} \u{062A}\u{0643}\u{0648}\u{0646} \u{0633}\u{0627}\u{0644}\u{0628}\u{0629}.',
       );
       return;
     }
@@ -2092,8 +2125,31 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
             .eq('id', productId);
       }
 
+      // The create/update RPCs do not accept the additional fee, so it is
+      // applied separately through the dedicated RPC.
+      String? additionalFeeError;
+
+      final storedAdditionalFee = _isEditing ? widget.product!.additionalFee : 0.0;
+
+      if ((additionalFee - storedAdditionalFee).abs() >= 0.005) {
+        try {
+          await repository.setAdditionalFee(
+            productId: productId,
+            additionalFee: additionalFee,
+          );
+        } catch (error) {
+          additionalFeeError = error.toString();
+        }
+      }
+
       if (!mounted) {
         return;
+      }
+
+      if (additionalFeeError != null) {
+        _showError(
+          '\u{062A}\u{0645} \u{062D}\u{0641}\u{0638} \u{0627}\u{0644}\u{0645}\u{0646}\u{062A}\u{062C}\u{060C} \u{0644}\u{0643}\u{0646} \u{062A}\u{0639}\u{0630}\u{0631} \u{062D}\u{0641}\u{0638} \u{0627}\u{0644}\u{0631}\u{0633}\u{0648}\u{0645} \u{0627}\u{0644}\u{0625}\u{0636}\u{0627}\u{0641}\u{064A}\u{0629}:\n$additionalFeeError',
+        );
       }
 
       Navigator.of(context).pop(true);
@@ -2231,6 +2287,24 @@ class _ProductEditorDialogState extends ConsumerState<_ProductEditorDialog> {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _additionalFeeController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: false,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                ],
+                decoration: const InputDecoration(
+                  labelText:
+                      '\u{0631}\u{0633}\u{0648}\u{0645} \u{0625}\u{0636}\u{0627}\u{0641}\u{064A}\u{0629}',
+                  helperText:
+                      '\u{0631}\u{0633}\u{0648}\u{0645} \u{0625}\u{0636}\u{0627}\u{0641}\u{064A}\u{0629} \u{0639}\u{0644}\u{0649} \u{0627}\u{0644}\u{0648}\u{062D}\u{062F}\u{0629}',
+                  suffixText: '\u{62C}.\u{645}',
+                ),
               ),
               const SizedBox(height: 10),
               DropdownButtonFormField<ProductSellingMethod>(
@@ -2619,3 +2693,5 @@ class _PricingRowEditorState extends State<_PricingRowEditor> {
     }
   }
 }
+
+

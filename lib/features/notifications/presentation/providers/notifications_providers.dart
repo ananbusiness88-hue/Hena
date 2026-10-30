@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../data/datasources/notification_remote_datasource.dart';
+import '../../data/repositories/notification_repository_impl.dart';
 import '../../domain/entities/app_notification.dart';
+import '../../domain/repositories/notification_repository.dart';
 
 final notificationsProvider = StreamProvider.autoDispose<List<AppNotification>>(
   (ref) async* {
@@ -84,15 +87,100 @@ final notificationsProvider = StreamProvider.autoDispose<List<AppNotification>>(
     }
   },
 );
-final unreadNotificationsCountProvider = Provider.autoDispose<int>((ref) {
-  final notifications = ref.watch(notificationsProvider);
+/// The notifications of the signed in user, minus the ones that are
+/// being deleted at the moment.
+///
+/// The server list is polled every two seconds, so a deletion that is
+/// still in flight is hidden right away instead of waiting for the next
+/// poll. When the server refuses the deletion the id is released again
+/// and the notification comes back.
+final visibleNotificationsProvider = Provider.autoDispose<List<AppNotification>>(
+  (ref) {
+    final notifications = ref.watch(notificationsProvider);
+    final deletion = ref.watch(notificationDeletionProvider);
 
-  return notifications.when(
-    data: (items) => items.where((item) => !item.isRead).length,
-    loading: () => 0,
-    error: (_, _) => 0,
+    final items = notifications.asData?.value ?? const <AppNotification>[];
+
+    if (deletion.hiddenIds.isEmpty) {
+      return items;
+    }
+
+    return items
+        .where((item) => !deletion.hiddenIds.contains(item.id))
+        .toList();
+  },
+);
+
+final unreadNotificationsCountProvider = Provider.autoDispose<int>((ref) {
+  final notifications = ref.watch(visibleNotificationsProvider);
+
+  return notifications.where((item) => !item.isRead).length;
+});
+
+final notificationRemoteDataSourceProvider =
+    Provider<NotificationRemoteDataSource>((ref) {
+      return NotificationRemoteDataSource(Supabase.instance.client);
+    });
+
+final notificationRepositoryProvider = Provider<NotificationRepository>((ref) {
+  return NotificationRepositoryImpl(
+    ref.watch(notificationRemoteDataSourceProvider),
   );
 });
+
+/// Tracks the notifications that are hidden while their deletion is in
+/// flight.
+class NotificationDeletionState {
+  const NotificationDeletionState({
+    this.hiddenIds = const <String>{},
+  });
+
+  final Set<String> hiddenIds;
+
+  NotificationDeletionState copyWith({
+    Set<String>? hiddenIds,
+  }) {
+    return NotificationDeletionState(
+      hiddenIds: hiddenIds ?? this.hiddenIds,
+    );
+  }
+}
+
+class NotificationDeletionNotifier extends Notifier<NotificationDeletionState> {
+  @override
+  NotificationDeletionState build() => const NotificationDeletionState();
+
+  /// Hides one notification while its deletion is in flight.
+  void hide(String notificationId) {
+    state = state.copyWith(
+      hiddenIds: {...state.hiddenIds, notificationId},
+    );
+  }
+
+  /// Shows a notification again, used when the deletion failed.
+  void reveal(String notificationId) {
+    final hiddenIds = {...state.hiddenIds}..remove(notificationId);
+
+    state = state.copyWith(hiddenIds: hiddenIds);
+  }
+
+  /// Hides a whole list of notifications, used by "clear all".
+  void hideAll(Iterable<String> notificationIds) {
+    state = state.copyWith(
+      hiddenIds: {...state.hiddenIds, ...notificationIds},
+    );
+  }
+
+  /// Restores a previously captured state, used to roll back a failure.
+  void revertTo(NotificationDeletionState previous) {
+    state = previous;
+  }
+}
+
+final notificationDeletionProvider =
+    NotifierProvider<NotificationDeletionNotifier, NotificationDeletionState>(
+      NotificationDeletionNotifier.new,
+    );
 
 final notificationActionsProvider = Provider<NotificationActions>((ref) {
   return NotificationActions(Supabase.instance.client);

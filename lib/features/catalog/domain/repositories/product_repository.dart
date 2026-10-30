@@ -40,4 +40,12 @@ abstract class ProductRepository {
     bool isActive = true,
     required List<ProductPricingDraft> pricing,
   });
+
+  /// Sets the per-unit additional fee of any product (admin permission).
+  ///
+  /// Returns the fee stored by the database.
+  Future<double> setAdditionalFee({
+    required String productId,
+    required double additionalFee,
+  });
 }

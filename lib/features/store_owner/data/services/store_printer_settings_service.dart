@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+﻿import 'package:shared_preferences/shared_preferences.dart';
 import 'package:thermal_printer_billbay/thermal_printer_billbay.dart';
 
 class StorePrinterSettings {
@@ -11,7 +11,7 @@ class StorePrinterSettings {
     this.printerName,
     this.printerAddress,
     this.paperSize = PaperSize.mm80,
-    this.codePage = CodePage.utf8,
+    this.codePage = CodePage.cp864,
   });
 
   bool get hasPrinter {
@@ -60,8 +60,7 @@ class StorePrinterSettingsService {
     required String printerName,
     required String printerAddress,
     required PaperSize paperSize,
-    required CodePage codePage,
-  }) async {
+    CodePage codePage = CodePage.utf8,  }) async {
     await _preferences.setString(
       _key(storeId, 'printer_name'),
       printerName,

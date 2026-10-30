@@ -45,3 +45,13 @@ enum AppMode {
 final appModeProvider = StateProvider<AppMode>(
   (ref) => AppMode.admin,
 );
+
+/// The role of the signed in account, exactly as it is stored on the
+/// profile. The application mode never changes this value: switching to
+/// the customer interface does not downgrade the account.
+final currentUserRoleProvider = Provider<String?>((ref) {
+  final profile = ref.watch(currentProfileProvider).asData?.value;
+  final role = profile?['role'];
+
+  return role is String ? role : null;
+});

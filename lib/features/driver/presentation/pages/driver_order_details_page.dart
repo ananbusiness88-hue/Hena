@@ -322,6 +322,24 @@ class _OrderSummary extends StatelessWidget {
               icon: Icons.payments_outlined,
               label: '${order.totalAmount.toStringAsFixed(2)} ج.م',
             ),
+            if (order.deliveryBaseFee > 0)
+              _InfoRow(
+                icon: Icons.local_shipping_outlined,
+                label:
+                    'رسوم التوصيل: ${order.deliveryBaseFee.toStringAsFixed(2)} ج.م',
+              ),
+            if (order.multiStoreFee > 0)
+              _InfoRow(
+                icon: Icons.storefront_outlined,
+                label:
+                    'رسوم المتاجر الإضافية: ${order.multiStoreFee.toStringAsFixed(2)} ج.م',
+              ),
+            if (order.deliveryAreaFee > 0)
+              _InfoRow(
+                icon: Icons.map_outlined,
+                label:
+                    'رسوم منطقة التوصيل: ${order.deliveryAreaFee.toStringAsFixed(2)} ج.م',
+              ),
           ],
         ),
       ),

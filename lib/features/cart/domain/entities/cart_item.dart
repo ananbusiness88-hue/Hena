@@ -21,8 +21,18 @@ class CartItem {
     return offer?.offerPrice ?? pricing.price;
   }
 
+  /// The extra per-unit surcharge configured for this product.
+  double get additionalFee {
+    return product.additionalFee;
+  }
+
+  /// The price of one unit including the additional fee.
+  double get effectiveUnitPrice {
+    return unitPrice + additionalFee;
+  }
+
   double get totalPrice {
-    return unitPrice * quantity;
+    return unitPrice * quantity + additionalFee * quantity;
   }
 
   String get uniqueKey {

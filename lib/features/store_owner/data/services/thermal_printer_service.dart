@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+﻿import 'dart:typed_data';
 
 import 'package:thermal_printer_billbay/thermal_printer_billbay.dart';
 
@@ -44,7 +44,6 @@ class ThermalPrinterService {
     required StoreOrderPart part,
     required List<Map<String, dynamic>> items,
     PaperSize paperSize = PaperSize.mm80,
-    CodePage codePage = CodePage.utf8,
   }) async {
     const mapper = StoreOrderPrintDataMapper();
 
@@ -57,21 +56,18 @@ class ThermalPrinterService {
       address: address,
       order: order,
       paperSize: paperSize,
-      codePage: codePage,
     );
   }
   Future<bool> printReceipt({
     required String address,
     required StoreOrderPrintData order,
     PaperSize paperSize = PaperSize.mm80,
-    CodePage codePage = CodePage.utf8,
   }) async {
     final builder = const StoreOrderReceiptBuilder();
 
-    final bytes = builder.build(
+    final bytes = await builder.build(
       order: order,
       paperSize: paperSize,
-      codePage: codePage,
     );
 
     return printBytes(
@@ -90,3 +86,5 @@ class ThermalPrinterService {
     _printer.dispose();
   }
 }
+
+

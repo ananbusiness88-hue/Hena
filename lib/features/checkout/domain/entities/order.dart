@@ -56,6 +56,13 @@ class Order {
   final PaymentStatus paymentStatus;
   final double subtotal;
   final double deliveryFee;
+
+  /// The delivery fee breakdown that was charged with this order. It is
+  /// stored with the order so a historical order always shows the fees
+  /// that were actually applied.
+  final double deliveryBaseFee;
+  final double multiStoreFee;
+  final double deliveryAreaFee;
   final double totalAmount;
   final String? deliveryAddressId;
   final String deliveryRecipientName;
@@ -76,6 +83,9 @@ class Order {
     required this.paymentStatus,
     required this.subtotal,
     required this.deliveryFee,
+    this.deliveryBaseFee = 0,
+    this.multiStoreFee = 0,
+    this.deliveryAreaFee = 0,
     required this.totalAmount,
     this.deliveryAddressId,
     required this.deliveryRecipientName,

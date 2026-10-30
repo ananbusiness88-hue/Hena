@@ -22,6 +22,14 @@ final driverAvailableOrdersProvider = FutureProvider.autoDispose<List<Order>>((
   ref,
 ) async {
   final repository = ref.watch(driverRepositoryProvider);
+
+  // An unavailable driver must not even attempt to discover orders.
+  // The backend blocks the query as well, this avoids a pointless
+  // round-trip and keeps the UI consistent with the stored state.
+  if (!await repository.getMyAvailability()) {
+    return const <Order>[];
+  }
+
   return repository.getAvailableOrders();
 });
 
@@ -50,23 +58,39 @@ class DriverAvailabilityController extends AsyncNotifier<bool> {
     return repository.getMyAvailability();
   }
 
-  Future<void> setAvailability(bool isAvailable) async {
+  /// Persists the availability change to the backend.
+  ///
+  /// Returns true when the new state was saved, false when the save
+  /// failed (in that case the previous state is restored).
+  Future<bool> setAvailability(bool isAvailable) async {
     final repository = ref.read(driverRepositoryProvider);
+    final previous = state.asData?.value ?? true;
 
     debugPrint('DRIVER SWITCH PRESSED: $isAvailable');
 
+    // Optimistic update so the switch reacts immediately.
     state = AsyncData(isAvailable);
 
-    state = await AsyncValue.guard(() async {
+    try {
       final result = await repository.setMyAvailability(
         isAvailable: isAvailable,
       );
 
       debugPrint('DRIVER AVAILABILITY RESULT: $result');
 
-      return result;
-    });
+      state = AsyncData(result);
 
-    debugPrint('DRIVER AVAILABILITY STATE: $state');
+      // Orders become visible (or disappear) again right away.
+      ref.invalidate(driverAvailableOrdersProvider);
+
+      return true;
+    } catch (error) {
+      debugPrint('DRIVER AVAILABILITY FAILED: $error');
+
+      // Restore the last confirmed state.
+      state = AsyncData(previous);
+
+      return false;
+    }
   }
 }

@@ -14,6 +14,7 @@ class NotificationsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationsAsync = ref.watch(notificationsProvider);
     final unreadCount = ref.watch(unreadNotificationsCountProvider);
+    final visibleItems = ref.watch(visibleNotificationsProvider);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -54,7 +55,7 @@ class NotificationsPage extends ConsumerWidget {
             action: () => ref.invalidate(notificationsProvider),
           ),
           data: (items) {
-            if (items.isEmpty) {
+            if (visibleItems.isEmpty) {
               return _NotificationsState(
                 icon: Icons.notifications_none_rounded,
                 title:
@@ -66,35 +67,200 @@ class NotificationsPage extends ConsumerWidget {
               );
             }
 
-            return RefreshIndicator(
-              onRefresh: () async {
-                ref.invalidate(notificationsProvider);
-                await ref.read(notificationsProvider.future);
-              },
-              child: ListView.separated(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-                itemCount: items.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final item = items[index];
-
-                  return _NotificationCard(
-                    notification: item,
-                    onTap: () async {
-                      if (!item.isRead) {
-                        await ref
-                            .read(notificationActionsProvider)
-                            .markAsRead(item.id);
-                        ref.invalidate(notificationsProvider);
-                      }
+            return Column(
+              children: [
+                _ClearAllButton(
+                  count: visibleItems.length,
+                  onPressed: () => _clearAllNotifications(context, ref),
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      ref.invalidate(notificationsProvider);
+                      await ref.read(notificationsProvider.future);
                     },
-                  );
-                },
-              ),
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+                      itemCount: visibleItems.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final item = visibleItems[index];
+
+                        return _NotificationCard(
+                          notification: item,
+                          onTap: () async {
+                            if (!item.isRead) {
+                              await ref
+                                  .read(notificationActionsProvider)
+                                  .markAsRead(item.id);
+                              ref.invalidate(notificationsProvider);
+                            }
+                          },
+                          onDelete: () =>
+                              _deleteNotification(context, ref, item),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  /// Deletes one notification.
+  ///
+  /// The notification disappears immediately and comes back when the
+  /// server refuses the deletion.
+  Future<void> _deleteNotification(
+    BuildContext context,
+    WidgetRef ref,
+    AppNotification item,
+  ) async {
+    final deletion = ref.read(notificationDeletionProvider.notifier);
+    final messenger = ScaffoldMessenger.of(context);
+
+    deletion.hide(item.id);
+
+    try {
+      await ref
+          .read(notificationRepositoryProvider)
+          .deleteNotification(item.id);
+
+      ref.invalidate(notificationsProvider);
+      ref.invalidate(unreadNotificationsCountProvider);
+    } catch (error) {
+      deletion.reveal(item.id);
+
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text(
+              '\u{062a}\u{0639}\u{0630}\u{0631} \u{062d}\u{0630}\u{0641} '
+              '\u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}. '
+              '\u{062d}\u{0627}\u{0648}\u{0644} \u{0645}\u{0631}\u{0629} '
+              '\u{0623}\u{062e}\u{0631}\u{0649}.',
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+    }
+  }
+
+  /// Deletes every notification of the signed in user after a
+  /// confirmation.
+  Future<void> _clearAllNotifications(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final previous = ref.read(notificationDeletionProvider);
+    final currentIds = ref
+        .read(visibleNotificationsProvider)
+        .map((item) => item.id)
+        .toList();
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text(
+          '\u{062d}\u{0630}\u{0641} \u{062c}\u{0645}\u{064a}\u{0639} '
+          '\u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}\u{0627}\u{062a}',
+        ),
+        content: const Text(
+          '\u{0633}\u{064a}\u{062a}\u{0645} \u{062d}\u{0630}\u{0641} '
+          '\u{062c}\u{0645}\u{064a}\u{0639} '
+          '\u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}\u{0627}\u{062a}؟',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text(
+              '\u{0625}\u{0644}\u{063a}\u{0627}\u{0621}',
+            ),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFFB42318),
+            ),
+            child: const Text(
+              '\u{062d}\u{0630}\u{0641} \u{0627}\u{0644}\u{062c}\u{0645}\u{064a}\u{0639}',
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) {
+      return;
+    }
+
+    final deletion = ref.read(notificationDeletionProvider.notifier);
+
+    deletion.hideAll(currentIds);
+
+    try {
+      await ref.read(notificationRepositoryProvider).deleteAllNotifications();
+
+      ref.invalidate(notificationsProvider);
+      ref.invalidate(unreadNotificationsCountProvider);
+    } catch (error) {
+      deletion.revertTo(previous);
+
+      messenger
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text(
+              '\u{062a}\u{0639}\u{0630}\u{0631} \u{062d}\u{0630}\u{0641} '
+              '\u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}\u{0627}\u{062a}. '
+              '\u{062d}\u{0627}\u{0648}\u{0644} \u{0645}\u{0631}\u{0629} '
+              '\u{0623}\u{062e}\u{0631}\u{0649}.',
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+    }
+  }
+}
+
+/// The button that clears every notification of the signed in user.
+class _ClearAllButton extends StatelessWidget {
+  const _ClearAllButton({required this.count, required this.onPressed});
+
+  final int count;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: SizedBox(
+        width: double.infinity,
+        child: OutlinedButton.icon(
+          onPressed: onPressed,
+          icon: const Icon(Icons.delete_sweep_outlined, size: 20),
+          label: Text(
+            '\u{062d}\u{0630}\u{0641} \u{062c}\u{0645}\u{064a}\u{0639} '
+            '\u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}\u{0627}\u{062a} '
+            '($count)',
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFFB42318),
+            side: const BorderSide(color: Color(0xFFE7C7C7)),
+            padding: const EdgeInsets.symmetric(vertical: 13),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
         ),
       ),
     );
@@ -182,10 +348,15 @@ class _NotificationsState extends StatelessWidget {
 }
 
 class _NotificationCard extends StatelessWidget {
-  const _NotificationCard({required this.notification, required this.onTap});
+  const _NotificationCard({
+    required this.notification,
+    required this.onTap,
+    required this.onDelete,
+  });
 
   final AppNotification notification;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +456,16 @@ class _NotificationCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                tooltip: '\u{062d}\u{0630}\u{0641} \u{0627}\u{0644}\u{0625}\u{0634}\u{0639}\u{0627}\u{0631}',
+                onPressed: onDelete,
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  color: Color(0xFFB42318),
+                  size: 22,
                 ),
               ),
             ],

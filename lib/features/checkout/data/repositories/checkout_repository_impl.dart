@@ -53,6 +53,9 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
         paymentStatus: _paymentStatusFromDb(row['payment_status'] as String),
         subtotal: (row['subtotal'] as num).toDouble(),
         deliveryFee: (row['delivery_fee'] as num).toDouble(),
+        deliveryBaseFee: (row['delivery_base_fee'] as num?)?.toDouble() ?? 0,
+        multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+        deliveryAreaFee: (row['delivery_area_fee'] as num?)?.toDouble() ?? 0,
         totalAmount: (row['total'] as num).toDouble(),
         deliveryAddressId: null,
         deliveryRecipientName: row['delivery_recipient_name'] as String,
@@ -104,6 +107,17 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
     );
 
     return _addressFromMap(row);
+  }
+
+  @override
+  Future<void> updateAddressArea({
+    required String addressId,
+    required String area,
+  }) async {
+    await remoteDataSource.updateAddressArea(
+      addressId: addressId,
+      area: area,
+    );
   }
 
   @override
@@ -173,6 +187,9 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
       paymentStatus: _paymentStatusFromDb(dbPaymentStatus),
       subtotal: (row['subtotal'] as num).toDouble(),
       deliveryFee: (row['delivery_fee'] as num).toDouble(),
+        deliveryBaseFee: (row['delivery_base_fee'] as num?)?.toDouble() ?? 0,
+        multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+        deliveryAreaFee: (row['delivery_area_fee'] as num?)?.toDouble() ?? 0,
       totalAmount: (row['total'] as num).toDouble(),
       deliveryAddressId: null,
       deliveryRecipientName:

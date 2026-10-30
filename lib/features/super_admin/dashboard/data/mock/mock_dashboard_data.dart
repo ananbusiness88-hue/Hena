@@ -49,6 +49,11 @@ class DashboardMockData {
       label: 'Reports / Analytics',
       icon: Icons.insights_outlined,
     ),
+    NavItem(
+      id: 'delivery-areas',
+      label: 'Delivery Areas',
+      icon: Icons.map_outlined,
+    ),
     NavItem(id: 'settings', label: 'Settings', icon: Icons.settings_outlined),
   ];
 

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../../../core/network/app_exception.dart';
 import '../../../../core/services/fcm_service.dart';
@@ -13,8 +12,11 @@ import '../../../store_owner/presentation/pages/store_owner_home_page.dart';
 import '../../../driver/presentation/pages/driver_home_page.dart';
 import '../../../catalog/presentation/pages/store_categories_page.dart';
 import '../providers/auth_providers.dart';
+import '../widgets/hena_double_back_exit_guard.dart';
 import 'complete_profile_page.dart';
 import 'phone_login_page.dart';
+
+export '../widgets/hena_double_back_exit_guard.dart';
 
 class AuthGate extends ConsumerStatefulWidget {
   const AuthGate({super.key});
@@ -204,69 +206,6 @@ class _AuthGateState extends ConsumerState<AuthGate> {
           },
         );
       },
-    );
-  }
-}
-
-/// Prevents accidental exit when back is pressed once on a role home page.
-class HenaDoubleBackExitGuard extends StatefulWidget {
-  final Widget child;
-
-  const HenaDoubleBackExitGuard({
-    super.key,
-    required this.child,
-  });
-
-  @override
-  State<HenaDoubleBackExitGuard> createState() =>
-      _HenaDoubleBackExitGuardState();
-}
-
-class _HenaDoubleBackExitGuardState
-    extends State<HenaDoubleBackExitGuard> {
-  DateTime? _lastBackPress;
-
-  @override
-  Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return widget.child;
-    }
-
-    return PopScope<Object?>(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          return;
-        }
-
-        final now = DateTime.now();
-        final lastPress = _lastBackPress;
-
-        if (lastPress != null &&
-            now.difference(lastPress) <= const Duration(seconds: 2)) {
-          _lastBackPress = null;
-          unawaited(SystemNavigator.pop());
-          return;
-        }
-
-        _lastBackPress = now;
-
-        final messenger = ScaffoldMessenger.maybeOf(context);
-        if (messenger == null) {
-          return;
-        }
-
-        messenger
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            const SnackBar(
-              content: Text('اضغط رجوع مرة أخرى للخروج'),
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-      },
-      child: widget.child,
     );
   }
 }

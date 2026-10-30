@@ -16,6 +16,18 @@ class CheckoutRemoteDataSource {
     return List<Map<String, dynamic>>.from(response);
   }
 
+  /// Updates the delivery area of one of the addresses of the current
+  /// user. The area decides the delivery fee that is charged.
+  Future<void> updateAddressArea({
+    required String addressId,
+    required String area,
+  }) async {
+    await client
+        .from('addresses')
+        .update({'area': area})
+        .eq('id', addressId);
+  }
+
   Future<Map<String, dynamic>> createAddress({
     required String userId,
     required String label,

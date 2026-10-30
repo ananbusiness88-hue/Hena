@@ -60,4 +60,37 @@ class StoreOwnerProductRepositoryImpl
       pricing: pricing,
     );
   }
+
+  @override
+  Future<double> setAdditionalFee({
+    required String productId,
+    required double additionalFee,
+  }) async {
+    final response = await remoteDataSource.client.rpc(
+      'set_product_additional_fee',
+      params: {
+        'p_product_id': productId,
+        'p_additional_fee': additionalFee,
+      },
+    );
+
+    return _parseFee(response, fallback: additionalFee);
+  }
+
+  /// The RPC may answer with a numeric, a string or nothing at all.
+  double _parseFee(dynamic response, {required double fallback}) {
+    if (response == null) {
+      return fallback;
+    }
+
+    if (response is num) {
+      return response.toDouble();
+    }
+
+    if (response is String) {
+      return double.tryParse(response) ?? fallback;
+    }
+
+    return fallback;
+  }
 }

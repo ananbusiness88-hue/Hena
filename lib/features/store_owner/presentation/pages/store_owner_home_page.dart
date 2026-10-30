@@ -1,18 +1,15 @@
-import '../../../../core/services/fcm_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../catalog/domain/entities/store.dart';
-import '../../../catalog/presentation/pages/store_categories_page.dart';
 import '../../../catalog/presentation/providers/catalog_providers.dart';
 import '../../../notifications/presentation/pages/notifications_page.dart';
 import '../providers/store_owner_providers.dart';
-import 'store_owner_offers_page.dart';
 import 'store_owner_orders_page.dart';
 import 'store_owner_store_management_page.dart';
 import 'store_owner_visual_icons.dart';
+import '../widgets/store_order_print_queue_consumer.dart';
+import '../widgets/store_owner_drawer.dart';
 import '../../../notifications/presentation/providers/notifications_providers.dart';
 
 class StoreOwnerHomePage extends ConsumerWidget {
@@ -33,6 +30,7 @@ class StoreOwnerHomePage extends ConsumerWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: const Color(0xFFF4F8FC),
+        drawer: const StoreOwnerDrawer(),
         appBar: AppBar(
           elevation: 0,
           scrolledUnderElevation: 0,
@@ -56,125 +54,20 @@ class StoreOwnerHomePage extends ConsumerWidget {
                 ),
               ],
             ),
-            child: PopupMenuButton<_StoreOwnerMenuAction>(
-              tooltip:
-                  '\u{0627}\u{0644}\u{0642}\u{0627}\u{0626}\u{0645}\u{0629}',
-              padding: EdgeInsets.zero,
-              icon: const Icon(
-                Icons.menu_rounded,
-                size: 29,
-                color: Color(0xFF35516E),
+            child: Builder(
+              builder: (drawerContext) => IconButton(
+                tooltip:
+                    '\u{0627}\u{0644}\u{0642}\u{0627}\u{0626}\u{0645}\u{0629}',
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  Scaffold.of(drawerContext).openDrawer();
+                },
+                icon: const Icon(
+                  Icons.menu_rounded,
+                  size: 29,
+                  color: Color(0xFF35516E),
+                ),
               ),
-              offset: const Offset(0, 58),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-              elevation: 10,
-              color: Colors.white,
-              onSelected: (action) async {
-                switch (action) {
-                  case _StoreOwnerMenuAction.offers:
-                    if (!context.mounted) return;
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const StoreOwnerOffersPage(),
-                      ),
-                    );
-                    break;
-
-                  case _StoreOwnerMenuAction.customerMode:
-                    if (!context.mounted) return;
-                    await Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => StoreCategoriesPage()),
-                    );
-                    break;
-
-                  case _StoreOwnerMenuAction.deleteAccount:
-                    await _openAccountDeletionPage(context);
-                    break;
-
-                  case _StoreOwnerMenuAction.logout:
-                    await FcmService.instance.unregisterCurrentToken();
-                    await Supabase.instance.client.auth.signOut();
-                    break;
-                }
-              },
-              itemBuilder: (context) => const [
-                PopupMenuItem(
-                  value: _StoreOwnerMenuAction.offers,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.local_offer_rounded,
-                        color: Color(0xFFE59A45),
-                        size: 21,
-                      ),
-                      SizedBox(width: 11),
-                      Text(
-                        '\u{0625}\u{062f}\u{0627}\u{0631}\u{0629} \u{0627}\u{0644}\u{0639}\u{0631}\u{0648}\u{0636}',
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: _StoreOwnerMenuAction.customerMode,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.shopping_bag_rounded,
-                        color: Color(0xFF4C82E8),
-                        size: 21,
-                      ),
-                      SizedBox(width: 11),
-                      Text(
-                        '\u{0648}\u{0636}\u{0639} \u{0627}\u{0644}\u{0639}\u{0645}\u{064a}\u{0644}',
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: _StoreOwnerMenuAction.deleteAccount,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.person_remove_alt_1_outlined,
-                        color: Color(0xFFB64F4F),
-                        size: 21,
-                      ),
-                      SizedBox(width: 11),
-                      Text(
-                        'طلب حذف الحساب',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFB64F4F),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  value: _StoreOwnerMenuAction.logout,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.logout_rounded,
-                        color: Color(0xFFD86666),
-                        size: 21,
-                      ),
-                      SizedBox(width: 11),
-                      Text(
-                        '\u{062a}\u{0633}\u{062c}\u{064a}\u{0644} \u{0627}\u{0644}\u{062e}\u{0631}\u{0648}\u{062c}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFB64F4F),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ),
 
@@ -296,7 +189,11 @@ class StoreOwnerHomePage extends ConsumerWidget {
             ),
           ),
         ),
-        body: DecoratedBox(
+        body: Column(
+          children: [
+            const StoreOrderPrintQueueConsumer(),
+            Expanded(
+              child: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topRight,
@@ -407,66 +304,13 @@ class StoreOwnerHomePage extends ConsumerWidget {
               );
             },
           ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
-}
-
-Future<void> _openAccountDeletionPage(BuildContext context) async {
-  final confirmed = await showDialog<bool>(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('طلب حذف الحساب'),
-      content: const Text(
-        'سيتم فتح صفحة طلب حذف الحساب. لن يحذف الحساب بمجرد فتح الصفحة يجب إرسال الطلب من خلالها.',
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(false),
-          child: const Text('إلغاء'),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.of(dialogContext).pop(true),
-          child: const Text('متابعة'),
-        ),
-      ],
-    ),
-  );
-
-  if (confirmed != true || !context.mounted) return;
-
-  final uri = Uri.parse(
-    'https://ananbusiness88-hue.github.io/Hena/delete-account.html',
-  );
-
-  try {
-    final opened = await launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
-
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تعذر فتح صفحة طلب حذف الحساب'),
-        ),
-      );
-    }
-  } catch (error) {
-    if (!context.mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تعذر فتح صفحة الحذف: $error')),
-    );
-  }
-}
-
-enum _StoreOwnerMenuAction {
-  offers,
-  customerMode,
-  deleteAccount,
-  logout,
 }
 
 class _WelcomeBanner extends StatelessWidget {
@@ -813,8 +657,8 @@ class _StoreTile extends StatelessWidget {
               ],
             ),
           ),
+            ),
         ),
-      ),
     );
   }
 }
@@ -1277,8 +1121,8 @@ class _OrderSectionCard extends StatelessWidget {
               ),
             ],
           ),
+          ),
         ),
-      ),
     );
   }
 }

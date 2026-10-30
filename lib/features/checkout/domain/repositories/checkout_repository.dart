@@ -25,4 +25,11 @@ abstract class CheckoutRepository {
     required List<OrderItem> items,
     String? customerNote,
   });
+
+  /// Updates the delivery area of one of the addresses of the current
+  /// user. The area decides the delivery fee that is charged.
+  Future<void> updateAddressArea({
+    required String addressId,
+    required String area,
+  });
 }

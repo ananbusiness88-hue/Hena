@@ -1,0 +1,16 @@
+-- ============================================================
+-- HENA - Placeholder for a migration that was applied directly to
+-- the remote database.
+--
+-- This migration version exists in the remote schema_migrations
+-- table but its original file was never kept in the local
+-- repository, which made `supabase db push` refuse to run
+-- ("Remote migration versions not found in local migrations
+-- directory").
+--
+-- The file is intentionally a no-op: the change is already applied
+-- to the remote database and `supabase db push` skips any version
+-- that is recorded as applied. Creating the placeholder restores
+-- the local migration history without re-running anything and
+-- without touching the remote migration metadata.
+-- ============================================================

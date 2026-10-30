@@ -588,6 +588,8 @@ class _ProductCard extends ConsumerWidget {
 
                           final firstPrice = pricing.first.price;
 
+                          final hasAdditionalFee = product.additionalFee > 0;
+
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -595,7 +597,10 @@ class _ProductCard extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    firstPrice.toStringAsFixed(2),
+                                    (hasAdditionalFee
+                                            ? firstPrice + product.additionalFee
+                                            : firstPrice)
+                                        .toStringAsFixed(2),
                                     style: const TextStyle(
                                       fontSize: 21,
                                       height: 1,
@@ -617,6 +622,18 @@ class _ProductCard extends ConsumerWidget {
                                   ),
                                 ],
                               ),
+
+                              if (hasAdditionalFee) ...[
+                                const SizedBox(height: 3),
+                                Text(
+                                  '\u0631\u0633\u0648\u0645 \u0625\u0636\u0627\u0641\u064a\u0629: ${product.additionalFee.toStringAsFixed(2)} \u062c\u0646\u064a\u0647',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFFB5761B),
+                                  ),
+                                ),
+                              ],
 
                               if (pricing.length > 1) ...[
                                 const SizedBox(height: 5),
@@ -844,7 +861,7 @@ class _ProductSelectionSheetState extends State<_ProductSelectionSheet> {
 
     final totalPrice = _selectedPricing == null
         ? 0.0
-        : _selectedPricing!.price * _quantity;
+        : (_selectedPricing!.price + widget.product.additionalFee) * _quantity;
 
     return SafeArea(
       child: Container(
@@ -990,6 +1007,52 @@ class _ProductSelectionSheetState extends State<_ProductSelectionSheet> {
                           fontSize: 12,
                           height: 1.45,
                           color: Color(0xFF718079),
+                        ),
+                      ),
+                    ],
+
+                    if (widget.product.additionalFee > 0) ...[
+                      const SizedBox(height: 9),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 9,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF6E8),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: const Color(0xFFE8C98E)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'السعر الأساسي: ${widget.product.price.toStringAsFixed(2)} جنيه',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF8A5A12),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              'رسوم إضافية: ${widget.product.additionalFee.toStringAsFixed(2)} جنيه',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF8A5A12),
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              'السعر النهائي للوحدة: ${widget.product.effectivePrice.toStringAsFixed(2)} جنيه',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: Color(0xFF19734D),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -1420,15 +1483,32 @@ class _ProductSelectionSheetState extends State<_ProductSelectionSheet> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        '${_formatNumber(option.price)} جنيه',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          color: selected
-                              ? const Color(0xFF19734D)
-                              : const Color(0xFF355A49),
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            widget.product.additionalFee > 0
+                                ? '${_formatNumber(option.price + widget.product.additionalFee)} جنيه'
+                                : '${_formatNumber(option.price)} جنيه',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w900,
+                              color: selected
+                                  ? const Color(0xFF19734D)
+                                  : const Color(0xFF355A49),
+                            ),
+                          ),
+                          if (widget.product.additionalFee > 0)
+                            Text(
+                              'رسوم إضافية: ${_formatNumber(widget.product.additionalFee)} جنيه',
+                              style: const TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFFB5761B),
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   ),

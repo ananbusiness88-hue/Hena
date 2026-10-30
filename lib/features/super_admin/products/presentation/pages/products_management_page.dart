@@ -858,11 +858,39 @@ class _ProductsManagementPageState
             ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 6),
-              child: Text(
-                'STORE: $storeName    '
-                'PRICE: ${product.price.toStringAsFixed(2)} EGP    '
-                'METHOD: ${product.sellingMethod.name.toUpperCase()}',
-                style: const TextStyle(color: Colors.white60, fontSize: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'STORE: $storeName    '
+                    'PRICE: ${product.price.toStringAsFixed(2)} EGP    '
+                    'METHOD: ${product.sellingMethod.name.toUpperCase()}',
+                    style: const TextStyle(color: Colors.white60, fontSize: 12),
+                  ),
+                  if (product.additionalFee > 0) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2A2010),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: const Color(0xFF8A6420)),
+                      ),
+                      child: Text(
+                        'ADDITIONAL FEE: ${product.additionalFee.toStringAsFixed(2)} EGP',
+                        style: const TextStyle(
+                          color: Color(0xFFE0A64B),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
             trailing: Row(
@@ -1004,6 +1032,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   List<XFile> _selectedImages = [];
   List<String> _existingImageUrls = [];
   final _priceController = TextEditingController();
+  final _additionalFeeController = TextEditingController(text: '0');
   final _sellingValueController = TextEditingController(text: '1');
 
   List<AdminStore> _stores = [];
@@ -1047,6 +1076,9 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
       _nameController.text = product.name;
       _descriptionController.text = product.description ?? '';
       _priceController.text = product.price.toString();
+      _additionalFeeController.text = product.additionalFee == 0
+          ? '0'
+          : product.additionalFee.toString();
       _sellingValueController.text = product.sellingValue.toString();
       _sellingMethod = product.sellingMethod;
       _isActive = product.isActive;
@@ -1454,10 +1486,19 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     }
 
     final price = double.tryParse(_priceController.text.trim());
+    final additionalFeeText = _additionalFeeController.text.trim();
+    final additionalFee = additionalFeeText.isEmpty
+        ? 0.0
+        : double.tryParse(additionalFeeText.replaceAll(',', '.'));
     final sellingValue = double.tryParse(_sellingValueController.text.trim());
 
     if (price == null || price <= 0) {
       _showMessage('Enter a valid base price.');
+      return;
+    }
+
+    if (additionalFee == null || additionalFee < 0) {
+      _showMessage('Enter a valid additional fee (zero or more).');
       return;
     }
 
@@ -1513,8 +1554,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
           ? null
           : _descriptionController.text.trim();
 
+      late final String productId;
+
       if (widget.initialProduct == null) {
-        final productId = await repository.createProduct(
+        productId = await repository.createProduct(
           storeId: _selectedStoreId!,
           categoryId: _selectedCategoryId,
           name: _nameController.text.trim(),
@@ -1536,8 +1579,10 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
               .eq('id', productId);
         }
       } else {
+        productId = widget.initialProduct!.id;
+
         await repository.updateProduct(
-          productId: widget.initialProduct!.id,
+          productId: productId,
           categoryId: _selectedCategoryId!,
           name: _nameController.text.trim(),
           description: description,
@@ -1571,13 +1616,38 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
         }
       }
 
+      // The create/update RPCs do not accept the additional fee, so it is
+      // applied separately through the dedicated RPC.
+      String? additionalFeeError;
+
+      final storedAdditionalFee =
+          widget.initialProduct?.additionalFee ?? 0.0;
+
+      if ((additionalFee - storedAdditionalFee).abs() >= 0.005) {
+        try {
+          await repository.setAdditionalFee(
+            productId: productId,
+            additionalFee: additionalFee,
+          );
+        } catch (error) {
+          additionalFeeError = error.toString();
+        }
+      }
+
       if (!mounted) return;
 
-      _showMessage(
-        widget.initialProduct == null
-            ? 'Product created successfully.'
-            : 'Product updated successfully.',
-      );
+      if (additionalFeeError != null) {
+        _showMessage(
+          'Product saved, but the additional fee could not be saved: '
+          '$additionalFeeError',
+        );
+      } else {
+        _showMessage(
+          widget.initialProduct == null
+              ? 'Product created successfully.'
+              : 'Product updated successfully.',
+        );
+      }
 
       Navigator.of(context).pop(true);
     } catch (error) {
@@ -1604,6 +1674,7 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
     _nameController.dispose();
     _descriptionController.dispose();
     _priceController.dispose();
+    _additionalFeeController.dispose();
     _sellingValueController.dispose();
     super.dispose();
   }
@@ -1754,6 +1825,14 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
             const SizedBox(height: 12),
 
             _numberField(controller: _priceController, label: 'BASE PRICE'),
+
+            const SizedBox(height: 12),
+
+            _numberField(
+              controller: _additionalFeeController,
+              label: 'ADDITIONAL FEE',
+              signed: false,
+            ),
 
             const SizedBox(height: 12),
 
@@ -1997,10 +2076,14 @@ class _AddProductPageState extends ConsumerState<AddProductPage> {
   Widget _numberField({
     required TextEditingController controller,
     required String label,
+    bool signed = true,
   }) {
     return TextFormField(
       controller: controller,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      keyboardType: TextInputType.numberWithOptions(
+        decimal: true,
+        signed: signed,
+      ),
       style: const TextStyle(color: Colors.white),
       decoration: _decoration(label),
     );

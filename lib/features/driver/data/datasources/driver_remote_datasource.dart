@@ -10,13 +10,14 @@ class DriverRemoteDataSource {
         .from('orders')
         .select(
           'id,unified_order_number,customer_id,driver_id,status,subtotal,'
-          'delivery_fee,extra_fee,total,customer_notes,delivery_points,'
+          'delivery_fee,delivery_base_fee,multi_store_fee,delivery_area_fee,'
+          'extra_fee,total,customer_notes,delivery_points,'
           'delivery_recipient_name,delivery_phone,delivery_governorate,'
           'delivery_city,delivery_area,delivery_building_number,'
           'delivery_apartment_number,delivery_address_details,created_at,'
           'order_items('
           'id,order_id,store_id,product_id,pricing_id,offer_id,product_name,'
-          'unit_price,quantity,selling_method,item_total'
+          'unit_price,quantity,selling_method,item_total,additional_fee'
           '),'
           'payments(payment_method,status)',
         )

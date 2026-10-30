@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../delivery/domain/entities/delivery_settings.dart';
+import '../../../../delivery/presentation/providers/delivery_area_providers.dart';
 import '../../../../delivery/presentation/providers/delivery_settings_providers.dart';
 
 class DeliverySettingsPage extends ConsumerStatefulWidget {
@@ -19,6 +20,7 @@ class _DeliverySettingsPageState
   final _baseFeeController = TextEditingController();
   final _includedStoresController = TextEditingController();
   final _extraStoreFeeController = TextEditingController();
+  final _defaultAreaFeeController = TextEditingController();
 
   DeliverySettings? _settings;
   bool _loading = true;
@@ -36,6 +38,7 @@ class _DeliverySettingsPageState
     _baseFeeController.dispose();
     _includedStoresController.dispose();
     _extraStoreFeeController.dispose();
+    _defaultAreaFeeController.dispose();
     super.dispose();
   }
 
@@ -60,6 +63,12 @@ class _DeliverySettingsPageState
           settings.includedStores.toString();
       _extraStoreFeeController.text =
           settings.extraStoreFee.toStringAsFixed(2);
+
+      if (settings.defaultAreaFee != null &&
+          _defaultAreaFeeController.text.isEmpty) {
+        _defaultAreaFeeController.text =
+            settings.defaultAreaFee!.toStringAsFixed(2);
+      }
 
       setState(() {
         _loading = false;
@@ -144,6 +153,20 @@ class _DeliverySettingsPageState
         includedStores: includedStores,
         extraStoreFee: extraStoreFee,
       );
+
+      final defaultAreaFee = _parseDouble(
+        _defaultAreaFeeController.text,
+      );
+
+      // The fallback fee of the areas that are not listed is stored
+      // in its own column, so it is saved with its own function. The
+      // field is optional, an empty value leaves the stored fee
+      // untouched.
+      if (defaultAreaFee != null && defaultAreaFee >= 0) {
+        await ref
+            .read(deliveryAreaActionsProvider)
+            .updateDefaultAreaFee(defaultAreaFee);
+      }
 
       if (!mounted) {
         return;
@@ -394,6 +417,39 @@ class _DeliverySettingsPageState
                                           _parseDouble(
                                         value ?? '',
                                       );
+
+                                      if (number == null ||
+                                          number < 0) {
+                                        return '\u0623\u062f\u062e\u0644 \u0642\u064a\u0645\u0629 \u0635\u062d\u064a\u062d\u0629';
+                                      }
+
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                  _field(
+                                    label:
+                                        '\u0631\u0633\u0648\u0645 \u0627\u0644\u062a\u0648\u0635\u064a\u0644 \u0627\u0644\u0627\u0641\u062a\u0631\u0627\u0639\u064a\u0629 \u0644\u0644\u0645\u0646\u0627\u0637\u0642 \u063a\u064a\u0631 \u0627\u0644\u0645\u062f\u0631\u062c\u0629',
+                                    hint: '5.00',
+                                    controller:
+                                        _defaultAreaFeeController,
+                                    icon:
+                                        Icons.map_outlined,
+                                    keyboardType:
+                                        const TextInputType
+                                            .numberWithOptions(
+                                      decimal: true,
+                                    ),
+                                    validator: (value) {
+                                      final text =
+                                          (value ?? '').trim();
+
+                                      if (text.isEmpty) {
+                                        return null;
+                                      }
+
+                                      final number =
+                                          _parseDouble(text);
 
                                       if (number == null ||
                                           number < 0) {

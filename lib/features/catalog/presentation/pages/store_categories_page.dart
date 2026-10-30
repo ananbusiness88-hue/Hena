@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../auth/presentation/utils/app_mode_switcher.dart';
 import '../../../../core/services/fcm_service.dart';
 import '../../../notifications/presentation/providers/notifications_providers.dart';
 import '../../../notifications/presentation/pages/notifications_page.dart';
@@ -57,6 +61,49 @@ class _StoreCategoriesPageState extends ConsumerState<StoreCategoriesPage> {
   static const _page = Color(0xFFF7FAF8);
 
   int _currentNavIndex = 0;
+  DateTime? _lastBackPress;
+
+  /// Handles the back button on the customer home.
+  ///
+  /// When another tab of the customer home is open the back button
+  /// returns to the first tab instead of leaving the page. On the first
+  /// tab it follows the same flow as the other role home pages: the
+  /// first press shows a hint, a second press leaves the application.
+  void _handleBack() {
+    if (_currentNavIndex != 0) {
+      setState(() {
+        _currentNavIndex = 0;
+      });
+      return;
+    }
+
+    final now = DateTime.now();
+    final lastPress = _lastBackPress;
+
+    if (lastPress != null &&
+        now.difference(lastPress) <= const Duration(seconds: 2)) {
+      _lastBackPress = null;
+      unawaited(SystemNavigator.pop());
+      return;
+    }
+
+    _lastBackPress = now;
+
+    final messenger = ScaffoldMessenger.maybeOf(context);
+    if (messenger == null) {
+      return;
+    }
+
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(
+          content: Text('اضغط رجوع مرة أخرى للخروج'),
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+  }
 
   @override
   void initState() {
@@ -69,11 +116,21 @@ class _StoreCategoriesPageState extends ConsumerState<StoreCategoriesPage> {
     final categoriesAsync = ref.watch(activeStoreCategoriesProvider);
     final appMode = ref.watch(appModeProvider);
     final isCustomerMode = appMode == AppMode.customer;
+    final isStoreOwner = ref.watch(currentUserRoleProvider) == 'store_owner';
     final cartCount = ref.watch(cartItemCountProvider);
     final unreadNotifications = ref.watch(unreadNotificationsCountProvider);
 
-    return Scaffold(
-      key: _scaffoldKey,
+    return PopScope<Object?>(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+
+        _handleBack();
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
       backgroundColor: _page,
       drawer: isCustomerMode
           ? Drawer(
@@ -156,6 +213,29 @@ class _StoreCategoriesPageState extends ConsumerState<StoreCategoriesPage> {
                           );
                         },
                       ),
+                      if (isStoreOwner) ...[
+                        ListTile(
+                          leading: const Icon(
+                            Icons.admin_panel_settings_rounded,
+                            color: Color(0xFF123F2F),
+                          ),
+                          title: const Text(
+                            'وضع الإدارة',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF123F2F),
+                            ),
+                          ),
+                          subtitle: const Text(
+                            'العودة إلى لوحة إدارة المتجر',
+                          ),
+                          onTap: () async {
+                            Navigator.of(context).pop();
+                            await switchToAdministrationMode(context, ref);
+                          },
+                        ),
+                        const Divider(height: 8),
+                      ],
                       ListTile(
                         leading: const Icon(
                           Icons.logout_rounded,
@@ -325,6 +405,7 @@ class _StoreCategoriesPageState extends ConsumerState<StoreCategoriesPage> {
             _currentNavIndex = index;
           });
         },
+      ),
       ),
     );
   }

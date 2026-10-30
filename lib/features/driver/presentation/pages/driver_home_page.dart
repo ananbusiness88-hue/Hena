@@ -131,6 +131,9 @@ Order _inProgressOrderFromMap(Map<String, dynamic> row) {
     paymentStatus: _paymentStatusFromDb(payment?['status'] as String?),
     subtotal: (row['subtotal'] as num?)?.toDouble() ?? 0,
     deliveryFee: (row['delivery_fee'] as num?)?.toDouble() ?? 0,
+    deliveryBaseFee: (row['delivery_base_fee'] as num?)?.toDouble() ?? 0,
+    multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+    deliveryAreaFee: (row['delivery_area_fee'] as num?)?.toDouble() ?? 0,
     totalAmount: (row['total'] as num?)?.toDouble() ?? 0,
     deliveryAddressId: null,
     deliveryRecipientName:
@@ -212,6 +215,9 @@ Order _completedOrderFromMap(Map<String, dynamic> row) {
     paymentStatus: _paymentStatusFromDb(payment?['status'] as String?),
     subtotal: (row['subtotal'] as num?)?.toDouble() ?? 0,
     deliveryFee: (row['delivery_fee'] as num?)?.toDouble() ?? 0,
+    deliveryBaseFee: (row['delivery_base_fee'] as num?)?.toDouble() ?? 0,
+    multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+    deliveryAreaFee: (row['delivery_area_fee'] as num?)?.toDouble() ?? 0,
     totalAmount: (row['total'] as num?)?.toDouble() ?? 0,
     deliveryAddressId: null,
     deliveryRecipientName:
@@ -309,12 +315,22 @@ class DriverHomePage extends ConsumerWidget {
                         completedTodayCount: completedTodayCount,
                         collectedToday: collectedToday,
                         inProgressCount: inProgressCount,
-                        onAvailabilityChanged: (value) {
-                          ref
+                        onAvailabilityChanged: (value) async {
+                          final saved = await ref
                               .read(
                                 driverAvailabilityControllerProvider.notifier,
                               )
                               .setAvailability(value);
+
+                          if (!saved && context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'تعذر تحديث حالة التوافر. حاول مرة أخرى.',
+                                ),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),
@@ -326,7 +342,7 @@ class DriverHomePage extends ConsumerWidget {
                 },
                 body: TabBarView(
                   children: [
-                    _OrdersTab(ordersAsync: ordersAsync),
+                    _OrdersTab(ordersAsync: ordersAsync, isAvailable: isAvailable),
                     _InProgressTab(ordersAsync: inProgressAsync),
                     _CompletedTodayTab(ordersAsync: completedTodayAsync),
                   ],
@@ -734,9 +750,13 @@ class _DriverTabsDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _OrdersTab extends StatelessWidget {
-  const _OrdersTab({required this.ordersAsync});
+  const _OrdersTab({
+    required this.ordersAsync,
+    required this.isAvailable,
+  });
 
   final AsyncValue<List<Order>> ordersAsync;
+  final bool isAvailable;
 
   @override
   Widget build(BuildContext context) {
@@ -752,6 +772,14 @@ class _OrdersTab extends StatelessWidget {
         ),
       ),
       data: (orders) {
+        if (!isAvailable) {
+          return const _SimpleEmptyTab(
+            title: 'أنت غير متاح للتوصيل حالياً',
+            subtitle:
+                'لن تظهر لك الطلبات الجديدة حتى تعود متاحاً من زر الحالة بالأعلى',
+          );
+        }
+
         if (orders.isEmpty) {
           return const _SimpleEmptyTab(
             title: 'لا توجد طلبات جديدة',

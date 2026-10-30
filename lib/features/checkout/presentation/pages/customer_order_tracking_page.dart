@@ -85,6 +85,7 @@ class _CustomerOrderTrackingPageState extends State<CustomerOrderTrackingPage> {
           .from('orders')
           .select(
             'id,unified_order_number,status,driver_id,subtotal,delivery_fee,'
+            'delivery_base_fee,multi_store_fee,delivery_area_fee,'
             'extra_fee,total,created_at,updated_at,customer_notes,'
             'delivery_recipient_name,delivery_phone,'
             'delivery_governorate,delivery_city,delivery_area,'
@@ -733,6 +734,9 @@ class _OrderInvoiceCard extends StatelessWidget {
 
     final subtotal = _toDouble(order['subtotal']);
     final delivery = _toDouble(order['delivery_fee']);
+    final deliveryBaseFee = _toDouble(order['delivery_base_fee']);
+    final multiStoreFee = _toDouble(order['multi_store_fee']);
+    final areaFee = _toDouble(order['delivery_area_fee']);
     final extraFee = _toDouble(order['extra_fee']);
     final total = _toDouble(order['total']);
 
@@ -818,7 +822,14 @@ class _OrderInvoiceCard extends StatelessWidget {
             const Divider(height: 1),
             const SizedBox(height: 12),
             _PriceRow(label: 'قيمة المنتجات', value: subtotal),
-            _PriceRow(label: 'رسوم التوصيل', value: delivery),
+            if (deliveryBaseFee > 0)
+              _PriceRow(label: 'رسوم التوصيل', value: deliveryBaseFee),
+            if (multiStoreFee > 0)
+              _PriceRow(label: 'رسوم المتاجر الإضافية', value: multiStoreFee),
+            if (areaFee > 0)
+              _PriceRow(label: 'رسوم منطقة التوصيل', value: areaFee),
+            if (deliveryBaseFee <= 0 && multiStoreFee <= 0 && areaFee <= 0)
+              _PriceRow(label: 'رسوم التوصيل', value: delivery),
             if (extraFee > 0) _PriceRow(label: 'رسوم إضافية', value: extraFee),
             const SizedBox(height: 5),
             _PriceRow(label: 'الإجمالي', value: total, emphasized: true),

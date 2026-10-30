@@ -26,4 +26,12 @@ abstract class StoreOwnerProductRepository {
     bool isActive = true,
     required List<ProductPricingDraft> pricing,
   });
+
+  /// Sets the per-unit additional fee of a product owned by the store owner.
+  ///
+  /// Returns the fee stored by the database.
+  Future<double> setAdditionalFee({
+    required String productId,
+    required double additionalFee,
+  });
 }

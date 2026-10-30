@@ -23,6 +23,7 @@ import '../../../drivers/presentation/pages/drivers_management_page.dart';
 import '../../../notifications/presentation/pages/admin_notification_center_page.dart';
 import '../../../offers/presentation/pages/offers_management_page.dart';
 import '../../../delivery_settings/presentation/pages/delivery_settings_page.dart';
+import '../../../delivery_areas/presentation/pages/delivery_areas_page.dart';
 
 /// Super Admin Dashboard entry point for the Hena admin console.
 ///
@@ -81,6 +82,12 @@ class _SuperAdminDashboardPageState
     Navigator.of(
       context,
     ).push(MaterialPageRoute(builder: (_) => const DeliverySettingsPage()));
+  }
+
+  void _openDeliveryAreas() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const DeliveryAreasPage()));
   }
 
   void _openCustomerMode() {
@@ -148,6 +155,12 @@ class _SuperAdminDashboardPageState
       hint: 'Control delivery fees',
       icon: Icons.local_shipping_outlined,
       onTap: _openDeliverySettings,
+    ),
+    QuickAction(
+      label: 'DELIVERY AREAS',
+      hint: 'Manage delivery areas',
+      icon: Icons.map_outlined,
+      onTap: _openDeliveryAreas,
     ),
 
     QuickAction(
@@ -233,6 +246,11 @@ class _SuperAdminDashboardPageState
 
             if (_navItems[i].id == 'settings') {
               _openDeliverySettings();
+              return;
+            }
+
+            if (_navItems[i].id == 'delivery-areas') {
+              _openDeliveryAreas();
               return;
             }
           },

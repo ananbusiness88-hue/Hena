@@ -108,6 +108,9 @@ class DriverRepositoryImpl implements DriverRepository {
       ),
       subtotal: (row['subtotal'] as num?)?.toDouble() ?? 0,
       deliveryFee: (row['delivery_fee'] as num?)?.toDouble() ?? 0,
+      deliveryBaseFee: (row['delivery_base_fee'] as num?)?.toDouble() ?? 0,
+      multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+      deliveryAreaFee: (row['delivery_area_fee'] as num?)?.toDouble() ?? 0,
       totalAmount: (row['total'] as num?)?.toDouble() ?? 0,
       deliveryAddressId: null,
       deliveryRecipientName:

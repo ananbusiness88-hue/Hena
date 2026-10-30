@@ -32,14 +32,18 @@ class StoreOrderPrintDataMapper {
         : part.orderId.toUpperCase();
   }
   StoreOrderPrintItem _mapItem(Map<String, dynamic> item) {
+    final quantityValue = _toDouble(item['quantity']);
     final quantity = _formatQuantity(item['quantity']);
     final unitPrice = _toDouble(item['unit_price']);
-    final itemTotal = _toDouble(item['item_total']);
+    final itemTotal = item['item_total'] == null
+        ? quantityValue * unitPrice
+        : _toDouble(item['item_total']);
 
     return StoreOrderPrintItem(
       productName: item['product_name']?.toString() ?? '',
       quantity: quantity,
       unitPrice: unitPrice,
+      additionalFee: _toDouble(item['additional_fee']),
       itemTotal: itemTotal,
     );
   }

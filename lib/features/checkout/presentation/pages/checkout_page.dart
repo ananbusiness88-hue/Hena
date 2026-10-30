@@ -10,6 +10,103 @@ import '../../domain/entities/address.dart';
 import '../../domain/entities/order.dart';
 import '../providers/checkout_providers.dart';
 import '../../../delivery/presentation/providers/delivery_settings_providers.dart';
+import '../../../delivery/presentation/providers/delivery_area_providers.dart';
+import '../../../delivery/domain/entities/delivery_area.dart';
+
+/// The delivery fee breakdown of the current basket.
+///
+/// The values come from the backend function that also calculates the
+/// fees when the order is created, so the customer always sees exactly
+/// the amount that will be charged.
+class DeliveryFeeBreakdown {
+  const DeliveryFeeBreakdown({
+    required this.baseFee,
+    required this.multiStoreFee,
+    required this.areaFee,
+    required this.totalFee,
+  });
+
+  const DeliveryFeeBreakdown.empty()
+    : baseFee = 0,
+      multiStoreFee = 0,
+      areaFee = 0,
+      totalFee = 0;
+
+  final double baseFee;
+  final double multiStoreFee;
+  final double areaFee;
+  final double totalFee;
+}
+
+final deliveryFeeBreakdownProvider = FutureProvider.autoDispose
+    .family<DeliveryFeeBreakdown, ({int storeCount, String area})>((
+      ref,
+      request,
+    ) async {
+      try {
+        final response = await Supabase.instance.client.rpc(
+          'calculate_delivery_fees',
+          params: {
+            'p_store_count': request.storeCount,
+            'p_area': request.area,
+          },
+        );
+
+        if (response is Map) {
+          final row = Map<String, dynamic>.from(response);
+
+          return DeliveryFeeBreakdown(
+            baseFee: (row['base_fee'] as num?)?.toDouble() ?? 0,
+            multiStoreFee: (row['multi_store_fee'] as num?)?.toDouble() ?? 0,
+            areaFee: (row['area_fee'] as num?)?.toDouble() ?? 0,
+            totalFee: (row['total_fee'] as num?)?.toDouble() ?? 0,
+          );
+        }
+      } catch (_) {
+        // Fall back to the local preview below.
+      }
+
+      return _previewDeliveryFees(
+        ref,
+        storeCount: request.storeCount,
+        areaName: request.area,
+      );
+    });
+
+/// Local preview of the delivery fees.
+///
+/// It mirrors the backend calculation and is only used when the backend
+/// breakdown cannot be read.
+Future<DeliveryFeeBreakdown> _previewDeliveryFees(
+  Ref ref, {
+  required int storeCount,
+  required String areaName,
+}) async {
+  final settings = ref.read(deliverySettingsProvider).asData?.value;
+  final areas = await ref.read(deliveryAreasProvider.future);
+
+  final baseFee = storeCount <= 0 ? 0.0 : (settings?.baseFee ?? 0);
+  final includedStores = settings?.includedStores ?? 1;
+  final extraStoreFee = settings?.extraStoreFee ?? 0;
+  final multiStoreFee = storeCount > includedStores
+      ? (storeCount - includedStores) * extraStoreFee
+      : 0.0;
+
+  var areaFee = 0.0;
+  for (final area in areas) {
+    if (area.name == areaName) {
+      areaFee = area.deliveryFee;
+      break;
+    }
+  }
+
+  return DeliveryFeeBreakdown(
+    baseFee: baseFee,
+    multiStoreFee: multiStoreFee,
+    areaFee: areaFee,
+    totalFee: baseFee + multiStoreFee + areaFee,
+  );
+}
 
 class CheckoutPage extends ConsumerStatefulWidget {
   const CheckoutPage({super.key});
@@ -29,6 +126,9 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
   bool _isSubmitting = false;
   bool _isLoadingCustomerData = true;
   Address? _savedDefaultAddress;
+
+  /// The delivery area the customer selected. It decides the area fee.
+  String? _selectedAreaName;
 
   static const String _paymentNumber = '01002026939';
 
@@ -259,6 +359,39 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     );
   }
 
+  /// The delivery area that is currently selected.
+  ///
+  /// The selection made by the customer wins. When nothing was selected
+  /// yet the area of the saved address is used if it is part of the
+  /// catalog, otherwise the first active area is used.
+  String? _resolveSelectedArea(List<DeliveryArea> areas) {
+    if (areas.isEmpty) {
+      return null;
+    }
+
+    final selected = _selectedAreaName;
+
+    if (selected != null) {
+      for (final area in areas) {
+        if (area.name == selected) {
+          return selected;
+        }
+      }
+    }
+
+    final savedArea = _savedDefaultAddress?.area?.trim();
+
+    if (savedArea != null && savedArea.isNotEmpty) {
+      for (final area in areas) {
+        if (area.name == savedArea) {
+          return savedArea;
+        }
+      }
+    }
+
+    return areas.first.name;
+  }
+
   Future<void> _confirmOrder(List<CartItem> items) async {
     if (_isSubmitting || _isLoadingCustomerData) {
       return;
@@ -296,12 +429,28 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
 
     final storeCount = groupedItems.length;
 
-    final deliverySettings = ref.read(deliverySettingsProvider).requireValue;
+    final areas = await ref.read(deliveryAreasProvider.future);
+    final selectedArea = _resolveSelectedArea(areas);
 
-    final deliveryFee = deliverySettings.calculateFee(storeCount);
+    if (selectedArea == null || selectedArea.isEmpty) {
+      _showMessage('\u0645\u0646 \u0641\u0636\u0644\u0643 \u0627\u062e\u062a\u0631 \u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062a\u0648\u0635\u064a\u0644');
+      return;
+    }
+
+    final fees = await ref.read(
+      deliveryFeeBreakdownProvider(
+        (storeCount: storeCount, area: selectedArea),
+      ).future,
+    );
+
+    final deliveryFee = fees.totalFee;
 
     final subtotal = ref.read(cartSubtotalProvider);
     final total = subtotal + deliveryFee;
+
+    if (!mounted) {
+      return;
+    }
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -312,8 +461,12 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
             'عدد المتاجر: $storeCount\n\n'
             'طريقة الدفع:\n'
             '${_paymentMethodName()}\n\n'
+            'منطقة التوصيل: $selectedArea\n\n'
             'إجمالي المنتجات: ${subtotal.toStringAsFixed(2)} ج.م\n'
-            'رسوم التوصيل: ${deliveryFee.toStringAsFixed(2)} ج.م\n\n'
+            'رسوم التوصيل: ${fees.baseFee.toStringAsFixed(2)} ج.م\n'
+            '${fees.multiStoreFee > 0 ? 'رسوم المتاجر الإضافية: ${fees.multiStoreFee.toStringAsFixed(2)} ج.م\n' : ''}'
+            '${fees.areaFee > 0 ? 'رسوم منطقة التوصيل: ${fees.areaFee.toStringAsFixed(2)} ج.م\n' : ''}'
+            'إجمالي رسوم التوصيل: ${deliveryFee.toStringAsFixed(2)} ج.م\n\n'
             'الإجمالي: ${total.toStringAsFixed(2)} ج.م\n\n'
             'الدفع يتم عند الاستلام فقط.'
           ),
@@ -345,14 +498,40 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
       final Address address;
 
       if (_isUsingSavedDefaultAddress()) {
-        address = _savedDefaultAddress!;
+        final saved = _savedDefaultAddress!;
+
+        // The delivery area decides the delivery fee, so the saved
+        // address is kept in sync with the area the customer selected.
+        if ((saved.area ?? '').trim() != selectedArea) {
+          await repository.updateAddressArea(
+            addressId: saved.id,
+            area: selectedArea,
+          );
+
+          address = Address(
+            id: saved.id,
+            userId: saved.userId,
+            label: saved.label,
+            recipientName: saved.recipientName,
+            phone: saved.phone,
+            governorate: saved.governorate,
+            city: saved.city,
+            area: selectedArea,
+            buildingNumber: saved.buildingNumber,
+            apartmentNumber: saved.apartmentNumber,
+            addressDetails: saved.addressDetails,
+            isDefault: saved.isDefault,
+          );
+        } else {
+          address = saved;
+        }
       } else {
         address = await repository.createAddress(
           userId: user.id,
           label: '\u0639\u0646\u0648\u0627\u0646 \u0627\u0644\u0637\u0644\u0628',
           recipientName: recipientName,
           phone: phone,
-          area: addressText,
+          area: selectedArea,
           buildingNumber: '',
           apartmentNumber: '',
           addressDetails: addressText,
@@ -459,15 +638,28 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
     }
 
     final storeCount = storeIds.length;
-    final deliveryFee =
-        deliverySettings?.calculateFee(storeCount) ?? 0.0;
+
+    final areasAsync = ref.watch(deliveryAreasProvider);
+    final areas = areasAsync.asData?.value ?? const <DeliveryArea>[];
+    final selectedArea = _resolveSelectedArea(areas);
+
+    final feesAsync = ref.watch(
+      deliveryFeeBreakdownProvider(
+        (storeCount: storeCount, area: selectedArea ?? ''),
+      ),
+    );
+    final fees =
+        feesAsync.asData?.value ?? const DeliveryFeeBreakdown.empty();
+
+    final deliveryFee = fees.totalFee;
     final total = subtotal + deliveryFee;
 
     final isBusy =
         _isSubmitting ||
         _isLoadingCustomerData ||
         deliverySettingsAsync.isLoading ||
-        deliverySettings == null;
+        deliverySettings == null ||
+        areasAsync.isLoading;
 
     return Scaffold(
       appBar: AppBar(
@@ -535,6 +727,44 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<String>(
+                    initialValue: selectedArea,
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      labelText:
+                          '\u0645\u0646\u0637\u0642\u0629 \u0627\u0644\u062a\u0648\u0635\u064a\u0644',
+                      prefixIcon: const Icon(Icons.map_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    items: areas
+                        .map(
+                          (area) => DropdownMenuItem<String>(
+                            value: area.name,
+                            child: Text(
+                              area.name,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: areas.isEmpty
+                        ? null
+                        : (value) {
+                            if (value == null) {
+                              return;
+                            }
+
+                            setState(() {
+                              _selectedAreaName = value;
+                            });
+                          },
                   ),
                   if (!_isLoadingCustomerData &&
                       _savedDefaultAddress == null) ...[
@@ -655,6 +885,32 @@ class _CheckoutPageState extends ConsumerState<CheckoutPage> {
                           const SizedBox(height: 10),
                           _SummaryRow(
                             title: '\u0631\u0633\u0648\u0645 \u0627\u0644\u062a\u0648\u0635\u064a\u0644',
+                            value: '${fees.baseFee.toStringAsFixed(2)} \u062c.\u0645',
+                          ),
+                          if (fees.multiStoreFee > 0) ...[
+                            const SizedBox(height: 10),
+                            _SummaryRow(
+                              title:
+                                  '\u0631\u0633\u0648\u0645 \u0627\u0644\u0645\u062a\u0627\u062c\u0631 '
+                                  '\u0627\u0644\u0625\u0636\u0627\u0641\u064a\u0629',
+                              value:
+                                  '${fees.multiStoreFee.toStringAsFixed(2)} \u062c.\u0645',
+                            ),
+                          ],
+                          if (fees.areaFee > 0) ...[
+                            const SizedBox(height: 10),
+                            _SummaryRow(
+                              title:
+                                  '\u0631\u0633\u0648\u0645 \u0645\u0646\u0637\u0642\u0629 '
+                                  '\u0627\u0644\u062a\u0648\u0635\u064a\u0644',
+                              value:
+                                  '${fees.areaFee.toStringAsFixed(2)} \u062c.\u0645',
+                            ),
+                          ],
+                          const SizedBox(height: 10),
+                          _SummaryRow(
+                            title: '\u0625\u062c\u0645\u0627\u0644\u064a \u0631\u0633\u0648\u0645 '
+                                '\u0627\u0644\u062a\u0648\u0635\u064a\u0644',
                             value: '${deliveryFee.toStringAsFixed(2)} \u062c.\u0645',
                           ),
                           const Divider(height: 24),
