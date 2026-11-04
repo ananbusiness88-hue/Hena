@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عقد المندوب — تطبيق هِنا</title>
+<meta name="description" content="نموذج عقد اتفاق مندوب التوصيل الإلكتروني لتطبيق هِنا — املأ بياناتك وارفع مستنداتك واحفظ العقد.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="hena-logo.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pearl:#fcfbf7;--white:#fff;--green:#2d956d;--green-dark:#257f5d;--dark:#123b35;--blue:#82b9df;--orange:#ef9b55;--text:#12323b;--muted:#60716f;--line:#e8eee9;--shadow:0 16px 45px rgba(31,78,61,.10);--font:'Cairo',sans-serif}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);background:var(--pearl);line-height:1.6;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cg fill='none' stroke='%236aa887' stroke-width='2' opacity='.55'%3E%3Cpath d='M20 58c25-27 49-20 60-2-22 2-43 13-60 2Z'/%3E%3Cpath d='M51 56C40 73 30 88 19 103'/%3E%3Cpath d='M215 38c21-21 40-15 48-1-18 2-32 9-48 1Z'/%3E%3Cpath d='M239 38c-9 12-19 23-29 35'/%3E%3Cpath d='M175 221c18-23 37-17 46-2-17 2-31 10-46 2Z'/%3E%3Cpath d='M199 220c-10 14-19 25-30 36'/%3E%3Cpath d='M38 235c13-17 29-13 36-2-13 1-24 7-36 2Z'/%3E%3Cpath d='M55 234c-7 10-14 18-21 26'/%3E%3C/g%3E%3C/svg%3E");background-size:280px 280px}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);box-shadow:0 5px 25px rgba(27,69,54,.06)}
+.nav-inner{height:72px;max-width:1120px;margin:auto;padding:0 22px;display:flex;align-items:center;gap:30px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{height:38px;width:auto}
+.brand-text{font-size:30px;font-weight:800;color:var(--green);letter-spacing:-2px}
+.nav-links{display:flex;gap:42px;align-items:center;flex:1;justify-content:center}
+.nav-links a{font-size:14px;font-weight:700}
+.nav-links a:hover{color:var(--green)}
+.nav-contact{display:flex;align-items:center;gap:14px}
+.nav-contact a{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--green)}
+.nav-contact a:hover{opacity:.75}
+.btn{border:0;border-radius:999px;padding:12px 24px;font:700 14px var(--font);cursor:pointer;transition:.25s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 10px 25px rgba(45,149,109,.18)}
+.btn-primary:hover{transform:translateY(-2px);background:var(--green-dark)}
+.btn-secondary{background:#fff;border:1px solid var(--green);color:var(--green)}
+.btn-secondary:hover{background:#f2faf6}
+.btn-large{padding:15px 34px;font-size:16px}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+.hero{padding:104px 20px 12px}
+.hero-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
+.hero-copy{order:2}
+.hero-logo{font-size:58px;line-height:1;color:var(--green);font-weight:800;margin-bottom:10px}
+.hero h1{font-size:40px;line-height:1.25;color:#102d3b;font-weight:800;margin-bottom:12px}
+.hero-copy>p{font-size:16px;color:var(--muted);margin-bottom:20px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.hero-badges span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:12px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.hero-art{order:1;background:linear-gradient(150deg,#e4f1d9,#cce5c8);border-radius:26px;padding:26px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.hero-art img{width:78%;max-width:320px}
+
+.contact-strip{max-width:1120px;margin:26px auto 0;padding:0 20px}
+.contact-bar{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px 26px;display:flex;align-items:center;gap:26px;flex-wrap:wrap;justify-content:center}
+.contact-item{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:700}
+.contact-item .ico{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:19px}
+.ico.wa{background:#25d366}
+.ico.mail{background:var(--green)}
+.ico.phone{background:var(--blue)}
+.contact-item small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+
+.contract-wrap{max-width:1000px;margin:30px auto 0;padding:0 20px 60px}
+.contract{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:42px 44px}
+.contract-head{text-align:center;border-bottom:2px solid var(--green);padding-bottom:22px;margin-bottom:26px}
+.contract-head img{margin:0 auto 12px;height:56px;width:auto}
+.contract-head h1{color:var(--green);font-size:25px;line-height:1.4;margin-bottom:8px}
+.contract-head p{color:var(--muted);font-size:13.5px}
+.legal-preamble{background:#ecfdf5;border-right:4px solid var(--green);padding:15px 17px;margin-bottom:24px;font-size:13.5px;color:#065f46;border-radius:0 12px 12px 0}
+.section-title{font-size:17px;font-weight:800;color:var(--green-dark);border-bottom:1px solid var(--line);padding-bottom:6px;margin:26px 0 14px}
+.contract-body{font-size:14.5px;text-align:justify;color:#1f2937}
+.contract-body ol{padding-right:22px}
+.contract-body li{margin-bottom:11px}
+.contract-body p{margin-bottom:11px}
+
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:16px}
+.form-group{display:flex;flex-direction:column}
+.form-group.full-width{grid-column:span 2}
+label{font-weight:700;font-size:13.5px;margin-bottom:6px;color:#374151}
+.req{color:#dc2626}
+input[type=text],input[type=tel],input[type=date],select,textarea{padding:11px 13px;border:1px solid #d1d5db;border-radius:10px;font:500 14px var(--font);outline:none;transition:.2s;background:#fff;width:100%;color:var(--text)}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(45,149,109,.12)}
+input[readonly]{background:#f4f6f5;color:var(--muted)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+.err{font-size:12px;color:#dc2626;font-weight:700;margin-top:5px;display:none}
+input.invalid{border-color:#dc2626;background:#fef2f2}
+input.invalid~.err{display:block}
+.file-upload-box{border:2px dashed #cbd5d1;border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:.2s;background:#fafcfb}
+.file-upload-box:hover{border-color:var(--green);background:#f4faf7}
+.file-upload-box.has-file{border-style:solid;border-color:var(--green);background:#f2faf6}
+.file-upload-box .up-text{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.file-upload-box .up-text b{color:var(--green)}
+.file-preview{display:none;max-height:190px;margin:0 auto;border-radius:10px;object-fit:contain}
+.file-preview.show{display:block}
+.checkbox-container{display:flex;gap:11px;align-items:flex-start;background:#f8faf9;border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:22px}
+.checkbox-container input{margin-top:4px;width:19px;height:19px;flex:none;accent-color:var(--green)}
+.checkbox-container label{font-weight:600;font-size:13px;line-height:1.7;color:#374151}
+.signature-box{margin-top:20px}
+.actions{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.status{margin-top:18px;padding:14px 16px;border-radius:12px;font-size:13.5px;font-weight:700;display:none;text-align:center;line-height:1.7}
+.status.show{display:block}
+.status.ok{background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+.status.err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
+.status.busy{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.result-box{margin-top:16px;padding:20px;border:1px solid #a7f3d0;background:#ecfdf5;border-radius:14px;text-align:center}
+.result-title{font-weight:800;color:#065f46;font-size:16px;margin-bottom:6px}
+.result-sub{font-size:13px;color:#047857;margin-bottom:14px;font-weight:600}
+.result-box .btn{margin:4px 5px}
+.result-note{font-size:12px;color:#047857;margin-top:14px;line-height:1.7}
+
+footer{background:#102e2a;color:#dbe7e2;padding:24px}
+.footer-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap;font-size:12.5px}
+.footer-inner strong{font-size:26px;font-weight:800;color:#5fc08e}
+.footer-inner a{color:#b9d9ca;font-weight:700}
+.footer-inner small{margin-right:auto;color:#82958f}
+.footer-contact{display:flex;gap:16px;flex-wrap:wrap}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .hero-inner{grid-template-columns:1fr}
+  .hero-copy{order:1;text-align:center}
+  .hero h1{font-size:31px}
+  .hero-badges{justify-content:center}
+  .hero-art{order:2}
+  .form-grid{grid-template-columns:1fr}
+  .form-group.full-width{grid-column:span 1}
+  .contract{padding:28px 22px}
+}
+@media(max-width:520px){
+  .hero{padding-top:92px}
+  .hero h1{font-size:26px}
+  .brand-text{display:none}
+  .contact-bar{flex-direction:column;gap:14px}
+  .actions{flex-direction:column}
+  .actions .btn{width:100%}
+}
+
+@media print{
+  body{background:#fff;padding:0}
+  .navbar,.hero,.contact-strip,.actions,.status,footer{display:none !important}
+  .contract-wrap{margin:0;padding:0;max-width:100%}
+  .contract{box-shadow:none;padding:0;border-radius:0}
+  input,select,textarea{border:none;border-bottom:1px solid #000;border-radius:0;padding:2px 0;background:transparent}
+  .file-upload-box{border:none;padding:0}
+  .file-preview{display:block !important;max-height:150px}
+  .checkbox-container{border:none;background:transparent;padding:0}
+}
+</style>
+</head>
+<body data-web3forms-key="">
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img src="hena-logo.png" alt="شعار هِنا">
+      <span class="brand-text">هِنا</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">الرئيسية</a>
+      <a href="#contract">نموذج العقد</a>
+      <a href="#contact">تواصل معنا</a>
+    </div>
+    <div class="nav-contact">
+      <a href="https://wa.me/96656267089" target="_blank" rel="noopener">واتساب</a>
+      <a href="mailto:contact.Henaapp@gmail.com">الإيميل</a>
+      <button class="btn btn-primary" data-url="https://github.com/ananbusiness88-hue/Hena/releases/latest/download/hena.apk">حَمِّل التطبيق <span>↓</span></button>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-logo">هِنا</div>
+        <h1>عقد اتفاق مندوب التوصيل<br>الإلكتروني.</h1>
+        <p>املأ بياناتك وارفع مستنداتك، والنسخة الموقّعة من العقد تصل مباشرة لإدارة تطبيق هِنا.</p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <a class="btn btn-primary btn-large" href="#contract">ابدأ تعبئة العقد ↓</a>
+          <a class="btn btn-secondary btn-large" href="index.html">رجوع للموقع</a>
+        </div>
+        <div class="hero-badges">
+          <span>🔒 بياناتك محمية</span>
+          <span>📄 PDF جاهز للتحميل</span>
+          <span>📧 يصل مباشرة للإدارة</span>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="hena-logo.png" alt="تطبيق هِنا">
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-strip" id="contact">
+    <div class="contact-bar">
+      <div class="contact-item">
+        <span class="ico wa">🟢</span>
+        <span>واتساب<small dir="ltr">+966 56 267 089</small></span>
+      </div>
+      <div class="contact-item">
+        <span class="ico mail">✉</span>
+        <span>البريد الإلكتروني<small dir="ltr">contact.Henaapp@gmail.com</small></span>
+      </div>
+      <div class="contact-item">
+        <span class="ico phone">☎</span>
+        <span>الدعم الفني<small dir="ltr">+966 56 267 089</small></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contract-wrap" id="contract">
+    <div class="contract" id="contractSheet">
+
+      <div class="contract-head">
+        <img src="hena-logo.png" alt="شعار هِنا">
+        <h1>عقد اتفاق وتنظيم تقديم خدمات التوصيل (مقاولة مستقلة)</h1>
+        <p>مُحرر وفقاً لأحكام القانون المدني المصري رقم 131 لسنة 1948 وقانون حماية البيانات الشخصية رقم 151 لسنة 2020</p>
+      </div>
+
+      <div class="legal-preamble">
+        <strong>إقرار قانوني مقدمة العقد:</strong> يُعتبر هذا العقد سنداً قانونياً وتفاقاً إلكترونياً ملزماً بين منصة/تطبيق "هِنا" الإلكتروني (طرف أول)، وبين المندوب الموقع أسفله (طرف ثانٍ). إن إتمام البيانات والتوقيع الإلكتروني يُعد إقراراً بالاطلاع والموافقة الكاملة على كافة البنود الواردة أدناه.
+      </div>
+
+      <div class="contract-body">
+        <div class="section-title">أولاً: طبيعة العلاقة القانونية</div>
+        <p>1. يُقر الطرف الثاني (المندوب) بأنه يعمل كـ <strong>"مقاول مستقل"</strong> لحسابه الخاص، ولا تربطه بإدارة التطبيق أي علاقة عمل مالي أو وظيفي أو تابع مباشر، ولا يخضع لأحكام قانون العمل المصري رقم 12 لسنة 2003، ولا يحق له المطالبة بأي ميزات عمالية أو تأمينات من الطرف الأول.</p>
+        <p>2. يقتصر دور التطبيق (الطرف الأول) على توفير الوساطة التقنية الخارطة لسهولة وصول الطلبات والمعلومات اللازمة للتواصل والتوصيل فقط.</p>
+
+        <div class="section-title">ثانياً: حظر اقتضاء أجر زائد والتواصل وتداول البيانات</div>
+        <ol>
+          <li><strong>الأجر والتحصيل:</strong> يلتزم المندوب بتحصيل القيمة المحددة قانوناً داخل التطبيق فقط للطلب والتوصيل، ويُحظر عليه مطلقاً طلب أي مبالغ إضافية أو إكراميات إجبارية من العميل تحت أي مسمى.</li>
+          <li><strong>حظر التواصل بعد التوصيل:</strong> يُحظر على المندوب نهائياً الاتصال أو إرسال رسائل أو محاولة التواصل مع العميل بأي طريقة (هاتفيّاً أو عبر تطبيقات التواصل) فور الانتهاء من تسليم الطلب.</li>
+          <li><strong>سرية البيانات وحمايتها:</strong> يلتزم المندوب بأحكام قانون حماية البيانات الشخصية رقم 151 لسنة 2020، ويُحظر عليه احتفاظ، أو استخدام، أو نقل، أو بيع، أو استخدام رقم هاتف العميل أو عنوانه أو أي من بياناته الشخصية في أي غرض آخر خارج نطاق التوصيل المباشر للطلب الحاضر. وتعتبر أي مخالفة لذلك جريمة إفشاء أسرار ويعاقب عليها قانوناً وتستوجب المساءلة الجنائية والمدنية المباشرة.</li>
+        </ol>
+
+        <div class="section-title">ثالثاً: سلامة الطلبات والتعديلات</div>
+        <ol>
+          <li>تنتقل مسؤولية سلامة الطلب والمنتجات والوجبات كاملاً إلى الطرف الثاني (المندوب) فور تسلمها من المتجر/المحل وحتى تسليمها للعميل بحالتها الأصلية.</li>
+          <li>يلتزم المندوب بمعايير الأمانة والسرعة والمحافظة على النظافة العامة وجودة المنتجات أثناء النقل.</li>
+          <li>لا يجوز للمندوب تعديل محتويات الطلب أو إلغاء أي جزء منه أو استبداله إلا بطلب صريح ومباشر من العميل وموافقة المتجر المسجل عبر التطبيق.</li>
+        </ol>
+
+        <div class="section-title">رابعاً: السلامة المرورية والمخالفات الشخصية</div>
+        <ol>
+          <li>يتحمل المندوب بمفرده كافة المسؤوليات الجنائية والمدنية الناتجة عن قيادته للمركبة، وهو المسئول الأول والأخير عن كافة مخالفات السير أو السلامة أو الحوادث المرورية ولا يتحمل التطبيق أي مسؤولية عن تصرفاته الشخصية أو سلوكياته بالطريق العام.</li>
+          <li>يلتزم المندوب بحمل رخص قيادة وتسيير سارية ومطابقة للقوانين المصرية المعمول بها.</li>
+        </ol>
+      </div>
+
+      <form id="contractForm" novalidate>
+        <div class="section-title">خامساً: بيانات وتوقيع المندوب (الطرف الثاني)</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullname">الاسم الكامل (كما هو بالبطاقة) <span class="req">*</span></label>
+            <input type="text" id="fullname" required placeholder="أدخل اسمك رباعي">
+            <span class="err">هذا الحقل مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="nationalId">رقم البطاقة الشخصية (الرقم القومي 14 رقم) <span class="req">*</span></label>
+            <input type="text" id="nationalId" maxlength="14" required placeholder="29900000000000" inputmode="numeric">
+            <span class="err">رقم قومي من 14 رقم مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">رقم الهاتف المحمول <span class="req">*</span></label>
+            <input type="tel" id="phone" required placeholder="01000000000" dir="ltr">
+            <span class="err">رقم هاتف مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="driverLicenseNo">رقم رخصة القيادة الشخصية <span class="req">*</span></label>
+            <input type="text" id="driverLicenseNo" required placeholder="رقم الرخصة">
+            <span class="err">هذا الحقل مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleLicenseNo">رقم رخصة تسيير المركبة <span class="req">*</span></label>
+            <input type="text" id="vehicleLicenseNo" required placeholder="رقم رخصة المركبة">
+            <span class="err">هذا الحقل مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleDetails">نوع المركبة ورقم اللوحة <span class="req">*</span></label>
+            <input type="text" id="vehicleDetails" required placeholder="دراجة نارية / سيارة — رقم اللوحة">
+            <span class="err">هذا الحقل مطلوب</span>
+          </div>
+
+          <div class="form-group">
+            <label for="personalPhoto">الصورة الشخصية للمندوب</label>
+            <div class="file-upload-box" data-for="personalPhoto">
+              <div class="up-text">📷 اضغط هنا لرفع <b>الصورة الشخصية</b></div>
+              <input type="file" id="personalPhoto" accept="image/*" hidden>
+              <img class="file-preview" id="previewPersonal" alt="الصورة الشخصية">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="nationalIdPhoto">صورة بطاقة الرقم القومي (وجهان)</label>
+            <div class="file-upload-box" data-for="nationalIdPhoto">
+              <div class="up-text">📷 اضغط لرفع <b>صورة البطاقة</b></div>
+              <input type="file" id="nationalIdPhoto" accept="image/*" hidden>
+              <img class="file-preview" id="previewNationalId" alt="صورة البطاقة">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="driverLicPhoto">صورة رخصة القيادة الشخصية</label>
+            <div class="file-upload-box" data-for="driverLicPhoto">
+              <div class="up-text">📷 اضغط لرفع <b>رخصة القيادة</b></div>
+              <input type="file" id="driverLicPhoto" accept="image/*" hidden>
+              <img class="file-preview" id="previewDriverLic" alt="رخصة القيادة">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleLicPhoto">صورة رخصة المركبة</label>
+            <div class="file-upload-box" data-for="vehicleLicPhoto">
+              <div class="up-text">📷 اضغط لرفع <b>رخصة المركبة</b></div>
+              <input type="file" id="vehicleLicPhoto" accept="image/*" hidden>
+              <img class="file-preview" id="previewVehicleLic" alt="رخصة المركبة">
+            </div>
+          </div>
+        </div>
+
+        <div class="signature-box">
+          <div class="checkbox-container">
+            <input type="checkbox" id="legalAgree" required>
+            <label for="legalAgree">أقر أنا المندوب الموضحة بياناتي وصورتي أعلاه، بأني اطلعت على كافة بنود هذا العقد وأوافق على الالتزام بها كاملاً دون قيد أو شرط، وأتحمل المسؤولية القانونية كاملة عن صحة البيانات والمستندات المرفقة وتوقيعي أدناه.</label>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="signatureText">توقيع المندوب (كتابة الاسم الرباعي بخط اليد) <span class="req">*</span></label>
+              <input type="text" id="signatureText" required placeholder="اكتب اسمك الرباعي بمثابة توقيع إلكتروني">
+              <span class="err">التوقيع مطلوب</span>
+            </div>
+            <div class="form-group">
+              <label for="signDate">تاريخ وتوقيت التوقيع الإلكتروني</label>
+              <input type="text" id="signDate" readonly>
+              <span class="hint">يُسجَّل تلقائياً لحظة التوقيع</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary btn-large" id="submitBtn">حفظ العقد وتحضير النسخة (PDF) وإرسالها</button>
+          <button type="button" class="btn btn-ghost btn-large" id="downloadBtn">تحميل PDF فقط</button>
+          <button type="button" class="btn btn-ghost btn-large" onclick="window.print()">طباعة العقد</button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <!-- shown after a successful save: the contract is always retrievable -->
+        <div id="resultBox" class="result-box" style="display:none">
+          <div class="result-title">✅ تم حفظ عقدك بنجاح</div>
+          <div class="result-sub" id="resultName"></div>
+          <a class="btn btn-primary" id="resultPdf" href="#" target="_blank" rel="noopener">📄 فتح / تحميل العقد (PDF)</a>
+          <a class="btn btn-secondary" id="resultWa" href="#" target="_blank" rel="noopener">📱 إرسال الرابط على واتساب</a>
+          <button type="button" class="btn btn-ghost" id="resultCopy">📋 نسخ الرابط</button>
+          <div class="result-note">حتى لو تعذّر إرسال الإيميل تلقائياً، العقد محفوظ بأمان على سيرفرات هِنا — استخدم زر واتساب لإرساله للإدارة فوراً.</div>
+        </div>
+      </form>
+
+      <!-- hidden transport form: fields + generated PDF + the uploaded photos -->
+      <form id="mailForm" action="https://formsubmit.co/contact.Henaapp@gmail.com" method="POST" enctype="multipart/form-data" style="display:none">
+        <input type="hidden" name="_subject" id="mailSubject" value="عقد مندوب توصيل جديد — هِنا">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="الاسم الكامل" id="mailName">
+        <input type="hidden" name="الرقم القومي" id="mailNationalId">
+        <input type="hidden" name="رقم الهاتف" id="mailPhone">
+        <input type="hidden" name="رقم رخصة القيادة" id="mailDriverLic">
+        <input type="hidden" name="رقم رخصة المركبة" id="mailVehicleLic">
+        <input type="hidden" name="المركبة واللوحة" id="mailVehicle">
+        <input type="hidden" name="التوقيع الإلكتروني" id="mailSignature">
+        <input type="hidden" name="تاريخ التوقيع" id="mailDate">
+        <input type="file" name="عقد PDF" id="mailPdf">
+        <input type="file" name="الصورة الشخصية" id="mailPersonal">
+        <input type="file" name="صورة بطاقة الرقم القومي" id="mailNationalIdPhoto">
+        <input type="file" name="صورة رخصة القيادة" id="mailDriverLicPhoto">
+        <input type="file" name="صورة رخصة المركبة" id="mailVehicleLicPhoto">
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>هِنا</strong>
+    <span>تجربة شراء مصممة للمنطقة اللي إنت عايش فيها.</span>
+    <div class="footer-contact">
+      <a href="https://wa.me/96656267089" target="_blank" rel="noopener">واتساب: +966 56 267 089</a>
+      <a href="mailto:contact.Henaapp@gmail.com">contact.Henaapp@gmail.com</a>
+    </div>
+    <small>© 2026 هِنا. جميع الحقوق محفوظة.</small>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var RECEIVER = 'contact.Henaapp@gmail.com';
+  var SUPABASE_FN = 'https://zbcguyqmdwrhfuzljzwb.supabase.co/functions/v1/submit_driver_contract';
+  // Optional Google Apps Script web-app URL used to deliver the email with
+  // the PDF attached. Leave empty to rely on FormSubmit only.
+  var APPS_SCRIPT_URL = '';
+  var MAX_TOTAL = 9 * 1024 * 1024;
+  var $ = function (id) { return document.getElementById(id); };
+
+  document.querySelectorAll('[data-url]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.location.href = btn.getAttribute('data-url');
+    });
+  });
+
+  function stamp() {
+    return new Date().toLocaleString('ar-EG', {
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+  $('signDate').value = stamp();
+
+  // ---------- file handling ----------
+  var FIELDS = [
+    { input: 'personalPhoto',  preview: 'previewPersonal',   mail: 'mailPersonal' },
+    { input: 'nationalIdPhoto', preview: 'previewNationalId', mail: 'mailNationalIdPhoto' },
+    { input: 'driverLicPhoto', preview: 'previewDriverLic',   mail: 'mailDriverLicPhoto' },
+    { input: 'vehicleLicPhoto', preview: 'previewVehicleLic', mail: 'mailVehicleLicPhoto' }
+  ];
+  var picked = {}; // inputId -> File
+
+  FIELDS.forEach(function (f) {
+    var input = $(f.input);
+    var preview = $(f.preview);
+    var box = document.querySelector('.file-upload-box[data-for="' + f.input + '"]');
+
+    box.addEventListener('click', function () { input.click(); });
+
+    input.addEventListener('change', function () {
+      if (!input.files || !input.files[0]) return;
+      var file = input.files[0];
+      picked[f.input] = file;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.classList.add('show');
+        box.classList.add('has-file');
+        box.querySelector('.up-text').innerHTML = '✅ تم رفع الملف — <b>اضغط للتغيير</b>';
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // ---------- image compression (keeps the email under the size limit) ----------
+  function compressImage(file, maxDim, quality) {
+    return new Promise(function (resolve) {
+      var reader = new FileReader();
+      reader.onerror = function () { resolve(file); };
+      reader.onload = function (e) {
+        var img = new Image();
+        img.onerror = function () { resolve(file); };
+        img.onload = function () {
+          var w = img.width, h = img.height;
+          var scale = Math.min(1, maxDim / Math.max(w, h));
+          var cw = Math.round(w * scale), ch = Math.round(h * scale);
+          var canvas = document.createElement('canvas');
+          canvas.width = cw; canvas.height = ch;
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, cw, ch);
+          ctx.drawImage(img, 0, 0, cw, ch);
+          canvas.toBlob(function (blob) {
+            if (!blob) { resolve(file); return; }
+            var base = (file.name || 'photo').replace(/\.[^.]+$/, '') || 'photo';
+            resolve(new File([blob], base + '.jpg', { type: 'image/jpeg' }));
+          }, 'image/jpeg', quality);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // ---------- validation ----------
+  function markInvalid(el, invalid) { if (el) el.classList.toggle('invalid', invalid); }
+
+  function validate() {
+    var ok = true, firstBad = null;
+    var fullname = $('fullname');
+    var nationalId = $('nationalId');
+    var phone = $('phone');
+    var driverLic = $('driverLicenseNo');
+    var vehicleLic = $('vehicleLicenseNo');
+    var vehicle = $('vehicleDetails');
+    var signature = $('signatureText');
+    var agree = $('legalAgree');
+
+    function check(el, valid) {
+      markInvalid(el, !valid);
+      if (!valid) { ok = false; if (!firstBad) firstBad = el; }
+    }
+    check(fullname, fullname.value.trim().length >= 3);
+    check(nationalId, /^\d{14}$/.test(nationalId.value.trim()));
+    check(phone, phone.value.trim().length >= 8);
+    check(driverLic, driverLic.value.trim().length >= 1);
+    check(vehicleLic, vehicleLic.value.trim().length >= 1);
+    check(vehicle, vehicle.value.trim().length >= 1);
+    check(signature, signature.value.trim().length >= 3);
+    check(agree, agree.checked);
+
+    if (firstBad) {
+      try { firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+      try { firstBad.focus(); } catch (e) {}
+    }
+    return ok;
+  }
+
+  document.querySelectorAll('#contractForm input').forEach(function (el) {
+    el.addEventListener('input', function () { markInvalid(el, false); });
+    el.addEventListener('change', function () { markInvalid(el, false); });
+  });
+
+  // ---------- status ----------
+  function setStatus(text, cls) {
+    var s = $('status');
+    s.textContent = text;
+    s.className = 'status show ' + (cls || '');
+  }
+
+  // ---------- PDF ----------
+  // In the cloned sheet every input is replaced by its literal value, so the
+  // generated PDF always shows the real data (html2canvas does not reliably
+  // render <input> values).
+  function buildPdf() {
+    var sheet = $('contractSheet');
+
+    return html2canvas(sheet, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: sheet.scrollWidth,
+      onclone: function (doc) {
+        var inputs = doc.querySelectorAll('#contractForm input, #contractForm select, #contractForm textarea');
+        for (var i = 0; i < inputs.length; i++) {
+          var el = inputs[i];
+          if (el.type === 'checkbox') {
+            var box = doc.createElement('span');
+            box.textContent = el.checked ? '☑ نعم' : '☐ لا';
+            box.style.fontWeight = '700';
+            box.style.color = el.checked ? '#065f46' : '#991b1b';
+            box.style.fontSize = '13px';
+            el.parentNode.replaceChild(box, el);
+            continue;
+          }
+          var span = doc.createElement('span');
+          span.textContent = el.value || '—';
+          span.style.fontWeight = '600';
+          span.style.color = '#12323b';
+          span.style.fontSize = '14px';
+          span.style.wordBreak = 'break-word';
+          el.parentNode.replaceChild(span, el);
+        }
+        var imgs = doc.querySelectorAll('.file-preview');
+        for (var j = 0; j < imgs.length; j++) {
+          imgs[j].style.display = 'block';
+          imgs[j].style.maxHeight = '170px';
+        }
+        var boxes = doc.querySelectorAll('.file-upload-box');
+        for (var k = 0; k < boxes.length; k++) {
+          boxes[k].style.border = '1px solid #e8eee9';
+          boxes[k].style.background = '#fafcfb';
+        }
+      }
+    }).then(function (canvas) {
+      var pdf = new window.jspdf.jsPDF('p', 'mm', 'a4');
+      var pageWidth = pdf.internal.pageSize.getWidth();
+      var pageHeight = pdf.internal.pageSize.getHeight();
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      var imgWidth = pageWidth;
+      var imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      var pdfHeight = imgHeight > pageHeight ? pageHeight : imgHeight;
+      var position = 0;
+      var remaining = imgHeight;
+
+      pdf.addImage(dataUrl, 'JPEG', 0, position, imgWidth, pdfHeight);
+      remaining -= pdfHeight;
+
+      while (remaining > 0) {
+        position = position - pageHeight + 8;
+        pdf.addPage();
+        pdf.addImage(dataUrl, 'JPEG', 0, position, imgWidth, pdfHeight);
+        remaining -= pdfHeight;
+      }
+      return pdf;
+    });
+  }
+
+  function fileName() {
+    var name = $('fullname').value.trim().replace(/\s+/g, '_') || 'مندوب';
+    return 'عقد_مندوب_توصيل_هنا_' + name + '.pdf';
+  }
+
+  function downloadBlob(blob, name) {
+    try {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      a.rel = 'noopener';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        if (a.parentNode) a.parentNode.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 8000);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setFileInput(inputId, file) {
+    var input = $(inputId);
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+  }
+
+  // ---------- step 1: store the contract on Supabase ----------
+  // The PDF and the photos are stored in a private bucket and the submission
+  // is recorded in the database, so the admin always has a durable copy with
+  // a signed download link, independent of any email provider.
+  function storeOnSupabase(blob, name) {
+    var fd = new FormData();
+    fd.append('full_name', $('fullname').value.trim());
+    fd.append('national_id', $('nationalId').value.trim());
+    fd.append('phone', $('phone').value.trim());
+    fd.append('driver_license_no', $('driverLicenseNo').value.trim());
+    fd.append('vehicle_license_no', $('vehicleLicenseNo').value.trim());
+    fd.append('vehicle_details', $('vehicleDetails').value.trim());
+    fd.append('signature_text', $('signatureText').value.trim());
+    fd.append('signed_at', $('signDate').value);
+    fd.append('source', 'contract-form');
+    fd.append('pdf', new File([blob], name, { type: 'application/pdf' }));
+
+    var photoMap = [
+      ['personalPhoto', 'personal_photo'],
+      ['nationalIdPhoto', 'national_id_photo'],
+      ['driverLicPhoto', 'driver_license_photo'],
+      ['vehicleLicPhoto', 'vehicle_license_photo']
+    ];
+    var photos = photoMap.filter(function (p) { return picked[p[0]]; });
+    var jobs = photos.map(function (p) {
+      return compressImage(picked[p[0]], 1600, 0.85).then(function (small) {
+        fd.append(p[1], small);
+        return small.size;
+      });
+    });
+
+    return Promise.all(jobs).then(function () {
+      return fetch(SUPABASE_FN, { method: 'POST', body: fd }).then(function (r) {
+        return r.json().then(function (j) {
+          if (!r.ok || !j.ok) throw new Error(j.error || ('HTTP ' + r.status));
+          return j;
+        });
+      });
+    });
+  }
+
+  // ---------- step 2: deliver the email ----------
+  // Three providers, tried in order, so a single provider outage never stops
+  // a contract from reaching the admin.
+  function sendViaAppsScript(blob, name) {
+    if (!APPS_SCRIPT_URL) return Promise.reject(new Error('Apps Script غير مفعّل'));
+    var fd = new FormData();
+    fd.append('to', RECEIVER);
+    fd.append('subject', 'عقد مندوب توصيل جديد — ' + $('fullname').value.trim() + ' — هِنا');
+    fd.append('name', $('fullname').value.trim());
+    fd.append('national_id', $('nationalId').value.trim());
+    fd.append('phone', $('phone').value.trim());
+    fd.append('driver_license_no', $('driverLicenseNo').value.trim());
+    fd.append('vehicle_license_no', $('vehicleLicenseNo').value.trim());
+    fd.append('vehicle_details', $('vehicleDetails').value.trim());
+    fd.append('signature', $('signatureText').value.trim());
+    fd.append('signed_at', $('signDate').value);
+    fd.append('pdf', new File([blob], name, { type: 'application/pdf' }));
+    FIELDS.forEach(function (f) {
+      if (picked[f.input]) fd.append(f.input, picked[f.input]);
+    });
+    return fetch(APPS_SCRIPT_URL, { method: 'POST', body: fd })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); });
+  }
+
+  function sendViaFormSubmit(blob, name) {
+    var fd = new FormData($('mailForm'));
+    fd.set('عقد PDF', new File([blob], name, { type: 'application/pdf' }));
+    var pairs = [
+      ['personalPhoto', 'الصورة الشخصية'],
+      ['nationalIdPhoto', 'صورة بطاقة الرقم القومي'],
+      ['driverLicPhoto', 'صورة رخصة القيادة'],
+      ['vehicleLicPhoto', 'صورة رخصة المركبة']
+    ];
+    pairs.forEach(function (p) {
+      if (picked[p[0]]) fd.set(p[1], picked[p[0]]);
+    });
+    return fetch('https://formsubmit.co/ajax/' + RECEIVER, {
+      method: 'POST',
+      body: fd,
+      headers: { 'Accept': 'application/json' }
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    });
+  }
+
+  function sendViaWeb3Forms(blob, name, signedUrl) {
+    // Web3Forms needs one free access key; only used when one is configured.
+    var key = document.body.getAttribute('data-web3forms-key');
+    if (!key) return Promise.reject(new Error('مفتاح Web3Forms غير مفعّل'));
+    var fd = new FormData();
+    fd.append('access_key', key);
+    fd.append('subject', 'عقد مندوب توصيل جديد — ' + $('fullname').value.trim());
+    fd.append('from_name', 'تطبيق هِنا');
+    fd.append('message', 'عقد مندوب توصيل جديد من ' + $('fullname').value.trim());
+    fd.append('رابط_العقد', signedUrl || '');
+    fd.append('عقد PDF', new File([blob], name, { type: 'application/pdf' }));
+    return fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd })
+      .then(function (r) { return r.json().then(function (j) { if (!j.success) throw new Error(j.message); return j; }); });
+  }
+
+  function deliver(blob, name, signedUrl) {
+    var attempts = [];
+    if (APPS_SCRIPT_URL) attempts.push(sendViaAppsScript);
+    attempts.push(sendViaFormSubmit);
+    attempts.push(sendViaWeb3Forms);
+
+    var lastError = null;
+    function next(i) {
+      if (i >= attempts.length) return Promise.reject(lastError || new Error('تعذّر الإرسال'));
+      return attempts[i](blob, name, signedUrl).then(function (r) {
+        return { provider: i === 0 && APPS_SCRIPT_URL ? 'Google Apps Script' : (i === (APPS_SCRIPT_URL ? 1 : 0) ? 'FormSubmit' : 'Web3Forms'), result: r };
+      }).catch(function (err) {
+        lastError = err;
+        return next(i + 1);
+      });
+    }
+    return next(0);
+  }
+
+  // ---------- PDF only ----------
+  $('downloadBtn').addEventListener('click', function () {
+    var btn = this;
+    if (!validate()) { setStatus('من فضلك أكمل البيانات المطلوبة أولاً.', 'err'); return; }
+    btn.disabled = true;
+    setStatus('جارٍ تجهيز ملف PDF…', 'busy');
+    buildPdf().then(function (pdf) {
+      downloadBlob(pdf.output('blob'), fileName());
+      setStatus('✅ تم تحميل ملف PDF بنجاح على جهازك. ويمكنك إرساله لإدارة هِنا عبر زر الإرسال بالأسفل.', 'ok');
+    }).catch(function (err) {
+      setStatus('تعذّر تجهيز الـPDF (' + (err && err.message ? err.message : 'خطأ غير معروف') + '). تأكد من الاتصال بالإنترنت ثم حاول مجدداً.', 'err');
+    }).then(function () { btn.disabled = false; });
+  });
+
+  function showResult(stored, name) {
+    var box = $('resultBox');
+    var link = stored.signed_url || '';
+    $('resultName').textContent = 'عقد مندوب التوصيل — ' + $('fullname').value.trim() + ' — ' + name;
+    $('resultPdf').href = link;
+    $('resultPdf').style.display = link ? '' : 'none';
+    $('resultWa').href = 'https://wa.me/96656267089?text=' + encodeURIComponent(
+      'عقد مندوب توصيل جديد من ' + $('fullname').value.trim() + '\n' + link
+    );
+    $('resultCopy').onclick = function () {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(link);
+        this.textContent = '✅ تم نسخ الرابط';
+      }
+    };
+    box.style.display = 'block';
+  }
+
+  // ---------- submit: build PDF, store it, and email it ----------
+  $('contractForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) { setStatus('من فضلك أكمل البيانات المطلوبة وعلّم مربع الموافقة.', 'err'); return; }
+
+    var btn = $('submitBtn');
+    btn.disabled = true;
+    setStatus('جارٍ تجهيز العقد وضغط الصور…', 'busy');
+
+    buildPdf().then(function (pdf) {
+      var blob = pdf.output('blob');
+      var name = fileName();
+
+      // fill the hidden fields used by the email providers
+      $('mailSubject').value = 'عقد مندوب توصيل جديد — ' + $('fullname').value.trim() + ' — هِنا';
+      $('mailName').value = $('fullname').value.trim();
+      $('mailNationalId').value = $('nationalId').value.trim();
+      $('mailPhone').value = $('phone').value.trim();
+      $('mailDriverLic').value = $('driverLicenseNo').value.trim();
+      $('mailVehicleLic').value = $('vehicleLicenseNo').value.trim();
+      $('mailVehicle').value = $('vehicleDetails').value.trim();
+      $('mailSignature').value = $('signatureText').value.trim();
+      $('mailDate').value = $('signDate').value;
+
+      setStatus('جارٍ حفظ العقد وحضيره للإرسال…', 'busy');
+
+      // 1) store on Supabase (durable copy + signed download link)
+      return storeOnSupabase(blob, name).then(function (stored) {
+        return { blob: blob, name: name, stored: stored };
+      });
+    }).then(function (ctx) {
+      showResult(ctx.stored, ctx.name);
+      setStatus('جارٍ إرسال العقد إلى الإدارة…', 'busy');
+
+      // 2) deliver the email (with the PDF attached)
+      return deliver(ctx.blob, ctx.name, ctx.stored.signed_url).then(function (sent) {
+        var link = ctx.stored.signed_url;
+        var msg = '✅ تم إرسال العقد بنجاح إلى ' + RECEIVER + ' (عبر ' + sent.provider + ').<br>';
+        if (link) {
+          msg += '📎 نسخة العقد محفوظة أيضاً على سيرفرات هِنا — <a href="' + link + '" target="_blank" rel="noopener">افتح/نزّل الـPDF</a>.<br>';
+        }
+        msg += 'كما تم تحميل نسخة PDF على جهاز المندوب.';
+        setStatus(msg, 'ok');
+
+        $('contractForm').reset();
+        $('signDate').value = stamp();
+        document.querySelectorAll('.file-preview').forEach(function (p) { p.classList.remove('show'); });
+        document.querySelectorAll('.file-upload-box').forEach(function (b) {
+          b.classList.remove('has-file');
+          b.querySelector('.up-text').innerHTML = '📷 اضغط هنا لرفع <b>الصورة</b>';
+        });
+        picked = {};
+        return ctx;
+      });
+    }).catch(function (err) {
+      var msg = err && err.message ? err.message : 'خطأ غير معروف';
+      setStatus('⚠️ تم حفظ العقد بنجاح، لكن تعذّر إرسال الإيميل تلقائياً (' + msg + ').<br>استخدم زر واتساب بالأسفل لإرسال رابط العقد للإدارة فوراً.', 'err');
+    }).then(function () { btn.disabled = false; });
+  });
+})();
+</script>
+</body>
+</html>
